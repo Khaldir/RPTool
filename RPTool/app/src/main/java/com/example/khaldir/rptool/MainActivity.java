@@ -14,7 +14,10 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -54,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
     private List<String> peerStrings = new ArrayList<String>();
 
+    //Spinner
+    private Spinner deviceSpinner = (Spinner)findViewById(R.id.deviceList);
+
+    //Connect Button
+    private Button connectButton = (Button)findViewById(R.id.connectButton);
+
+    //Device to Connect to
+    private WifiP2pDevice connectDevice;
 
 
     @Override
@@ -109,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
                 // No services have actually been discovered yet, so this method
                 // can often be left blank.  Code for peer discovery goes in the
                 // onReceive method, detailed below.
+
+                connectButton.setVisibility(View.VISIBLE);
+
+
             }
 
             @Override
@@ -118,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
             }
         });
     }
+
+
 
     private WifiP2pManager.PeerListListener peerListListener = new WifiP2pManager.PeerListListener() {
         @Override
@@ -137,9 +154,23 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
             // If an AdapterView is backed by this data, notify it
             // of the change.  For instance, if you have a ListView of
             // available peers, trigger an update.
-            Spinner deviceList = (Spinner) findViewById(R.id.deviceList);
+
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, peerStrings);
-            deviceList.setAdapter(adapter);
+            deviceSpinner.setAdapter(adapter);
+
+            deviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    connectButton.setText("Connect to " + peerStrings.get(position));
+                    connectDevice = peers.get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+
+            });
 
             // Perform any other updates needed based on the new list of
             // peers connected to the Wi-Fi P2P network.
@@ -147,24 +178,30 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
         }
     };
 
-   private void connectToDevice (WifiP2pDevice device)
+   protected void connectToDevice ()
    {
-       WifiP2pConfig WiFiConfig = new WifiP2pConfig();
-       WiFiConfig.deviceAddress = device.deviceAddress;
-       WiFiConfig.wps.setup = WpsInfo.PBC;
+       if (connectDevice != null){
+           WifiP2pConfig WiFiConfig = new WifiP2pConfig();
+           WiFiConfig.deviceAddress = connectDevice.deviceAddress;
+           WiFiConfig.wps.setup = WpsInfo.PBC;
 
-       mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener(){
-           @Override
-           public void onSuccess() {
-               // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-           }
+           mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener(){
+               @Override
+               public void onSuccess() {
+                   // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+               }
 
-           @Override
-           public void onFailure(int reason) {
-               Toast.makeText(MainActivity.this, "Connect failed. Retry.",
-                       Toast.LENGTH_SHORT).show();
-           }
-       });
+               @Override
+               public void onFailure(int reason) {
+                   Toast.makeText(MainActivity.this, "Connect failed. Retry.",
+                           Toast.LENGTH_SHORT).show();
+               }
+           });
+       }
+       else{
+           Toast.makeText(MainActivity.this, "Select a Device",
+                   Toast.LENGTH_SHORT).show();
+       }
    }
 
 

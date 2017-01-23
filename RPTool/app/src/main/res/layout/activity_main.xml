@@ -11,7 +11,7 @@
     tools:context="com.example.khaldir.rptool.MainActivity">
 
     <Button
-        android:text="Button"
+        android:text="Search for Devices"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -27,4 +27,16 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="17dp"
         android:id="@+id/deviceList" />
+
+    <Button
+        android:text="Select a Device to Connect to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/connectButton"
+        android:layout_below="@+id/deviceList"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"
+        android:onClick="connectToDevice" />
 </RelativeLayout>
