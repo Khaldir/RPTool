@@ -5,15 +5,21 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +28,7 @@ import static android.R.attr.action;
 import static android.os.Looper.getMainLooper;
 import static java.util.Collections.addAll;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.ConnectionInfoListener {
 
     // Global Variables
 
@@ -84,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        receiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this);
+        receiver = new WiFiDirectBroadcastReceiver(mManager, mChannel, this, peerListListener);
         registerReceiver(receiver, intentFilter);
     }
 
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             //Get List of Peers
             peers.clear();
             peers.addAll(peerList.getDeviceList());
+            peerStrings.clear();
 
             //Stringify devices
             for (WifiP2pDevice device:peers)
@@ -139,4 +146,48 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+   private void connectToDevice (WifiP2pDevice device)
+   {
+       WifiP2pConfig WiFiConfig = new WifiP2pConfig();
+       WiFiConfig.deviceAddress = device.deviceAddress;
+       WiFiConfig.wps.setup = WpsInfo.PBC;
+
+       mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener(){
+           @Override
+           public void onSuccess() {
+               // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+           }
+
+           @Override
+           public void onFailure(int reason) {
+               Toast.makeText(MainActivity.this, "Connect failed. Retry.",
+                       Toast.LENGTH_SHORT).show();
+           }
+       });
+   }
+
+
+    @Override
+    public void onConnectionInfoAvailable(final WifiP2pInfo info) {
+        // InetAddress from WifiP2pInfo struct.
+        try {
+            InetAddress groupOwnerAddress = InetAddress.getByName(info.groupOwnerAddress.getHostAddress());
+        } catch (UnknownHostException e){
+            Toast.makeText(MainActivity.this, e.getMessage(),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        // After the group negotiation, we can determine the group owner
+        // (server).
+        if (info.groupFormed && info.isGroupOwner) {
+            // Do whatever tasks are specific to the group owner.
+            // One common case is creating a group owner thread and accepting
+            // incoming connections.
+        } else if (info.groupFormed) {
+            // The other device acts as the peer (client). In this case,
+            // you'll want to create a peer thread that connects
+            // to the group owner.
+        }
+    }
 }
