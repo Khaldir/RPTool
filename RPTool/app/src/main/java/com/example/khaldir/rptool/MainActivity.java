@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     // Global Variables
 
     //Context
-    Context context = this;
+    Context context;
 
     //Listens for WiFi events
     private final IntentFilter intentFilter = new IntentFilter();
@@ -48,20 +48,20 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     WifiP2pManager mManager;
 
     //Records state of Wifi P2P
-    private boolean IsWifiP2pEnabled = false;
+    private boolean IsWifiP2pEnabled;
 
     //Broadcast receiver
     WiFiDirectBroadcastReceiver receiver;
 
     //List of Peers
-    private List<WifiP2pDevice> peers = new ArrayList<WifiP2pDevice>();
-    private List<String> peerStrings = new ArrayList<String>();
+    private List<WifiP2pDevice> peers;
+    private List<String> peerStrings;
 
     //Spinner
-    private Spinner deviceSpinner = (Spinner)findViewById(R.id.deviceList);
+    private Spinner deviceSpinner;
 
     //Connect Button
-    private Button connectButton = (Button)findViewById(R.id.connectButton);
+    private Button connectButton;
 
     //Device to Connect to
     private WifiP2pDevice connectDevice;
@@ -71,6 +71,13 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
+        IsWifiP2pEnabled = false;
+        peers = new ArrayList<WifiP2pDevice>();
+        peerStrings = new ArrayList<String>();
+        deviceSpinner = (Spinner)findViewById(R.id.deviceList);
+        connectButton = (Button)findViewById(R.id.connectButton);
 
         //Setup intentFilter
             // Indicates a change in the Wi-Fi P2P status.
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
         unregisterReceiver(receiver);
     }
 
-    protected void discoverPeers(){
+    protected void discoverPeers(View sender){
         mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
 
             @Override
@@ -178,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
         }
     };
 
-   protected void connectToDevice ()
+   protected void connectToDevice (View view)
    {
        if (connectDevice != null){
            WifiP2pConfig WiFiConfig = new WifiP2pConfig();

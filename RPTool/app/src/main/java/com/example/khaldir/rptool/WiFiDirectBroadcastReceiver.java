@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import static android.os.Looper.getMainLooper;
 
@@ -71,6 +72,9 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 // info to find group owner IP
 
                 mManager.requestConnectionInfo(mChannel, mActivity);
+
+                Toast.makeText(mActivity, "Connected.",
+                        Toast.LENGTH_SHORT).show();
 
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
