@@ -39,4 +39,30 @@
         android:layout_alignParentEnd="true"
         android:visibility="invisible"
         android:onClick="connectToDevice" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/sendTextBox"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/connectButton"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:hint="Input Text to Send"
+        android:visibility="invisible" />
+
+    <Button
+        android:text="Send Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sendTextBox"
+        android:layout_marginTop="16dp"
+        android:id="@+id/sendTextButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"
+        android:onClick="sendTextClick" />
 </RelativeLayout>
