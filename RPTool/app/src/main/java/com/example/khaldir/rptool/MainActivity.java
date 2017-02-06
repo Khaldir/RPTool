@@ -14,8 +14,10 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,11 +27,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -90,6 +100,15 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     //Connected IPs
     private final ArrayList<InetAddress> addressConnectionsList = new ArrayList<InetAddress>();
 
+    //Sockets
+    private Socket socket;
+    private ServerSocket serverSocket;
+
+    //Handlers
+    Handler updateConversationHandler;
+
+    //Threads
+    Thread serverThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,44 +120,51 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
         IsWifiP2pEnabled = false;
         peers = new ArrayList<WifiP2pDevice>();
         peerStrings = new ArrayList<String>();
-        deviceSpinner = (Spinner)findViewById(R.id.deviceList);
-        connectButton = (Button)findViewById(R.id.connectButton);
+        deviceSpinner = (Spinner) findViewById(R.id.deviceList);
+        connectButton = (Button) findViewById(R.id.connectButton);
+
+        updateConversationHandler = new Handler();
 
         //Setup intentFilter
-            // Indicates a change in the Wi-Fi P2P status.
-            intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        // Indicates a change in the Wi-Fi P2P status.
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 
-            // Indicates a change in the list of available peers.
-            intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        // Indicates a change in the list of available peers.
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
 
-            // Indicates the state of Wi-Fi P2P connectivity has changed.
-            intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        // Indicates the state of Wi-Fi P2P connectivity has changed.
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
 
-            // Indicates this device's details have changed.
-            intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        // Indicates this device's details have changed.
+        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         //Retrieve Channel
-            mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-            mChannel = mManager.initialize(this, getMainLooper(), new WifiP2pManager.ChannelListener() {
+        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        mChannel = mManager.initialize(this, getMainLooper(), new WifiP2pManager.ChannelListener() {
 
-                @Override
-                public void onChannelDisconnected() {
-                    Toast.makeText(context, "Channel disconnected!",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+            @Override
+            public void onChannelDisconnected() {
+                Toast.makeText(context, "Channel disconnected!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //Clean up previous connections
         disconnect();
 
+        //Open Threads
+        this.serverThread = new Thread(new ServerThread());
+        this.serverThread.start();
+
     }
 
-    public void setIsWifiP2pEnabled(boolean in)
-    {
+    public void setIsWifiP2pEnabled(boolean in) {
         IsWifiP2pEnabled = in;
     }
 
-    /** register the BroadcastReceiver with the intent values to be matched */
+    /**
+     * register the BroadcastReceiver with the intent values to be matched
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -184,9 +210,14 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     protected void onStop() {
         super.onStop();
         disconnect();
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    protected void discoverPeers(View sender){
+    protected void discoverPeers(View sender) {
         mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
 
             @Override
@@ -210,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     }
 
 
-
     private WifiP2pManager.PeerListListener peerListListener = new WifiP2pManager.PeerListListener() {
         @Override
         public void onPeersAvailable(WifiP2pDeviceList peerList) {
@@ -220,8 +250,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
             peerStrings.clear();
 
             //Stringify devices
-            for (WifiP2pDevice device:peers)
-            {
+            for (WifiP2pDevice device : peers) {
                 peerStrings.add(device.toString());
             }
 
@@ -253,39 +282,42 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
         }
     };
 
-   protected void connectToDevice (View view)
-   {
-       if (connectDevice != null){
-           WifiP2pConfig WiFiConfig = new WifiP2pConfig();
-           WiFiConfig.deviceAddress = connectDevice.deviceAddress;
-           WiFiConfig.wps.setup = WpsInfo.PBC;
+    protected void connectToDevice(View view) {
+        if (connectDevice != null) {
+            WifiP2pConfig WiFiConfig = new WifiP2pConfig();
+            WiFiConfig.deviceAddress = connectDevice.deviceAddress;
+            WiFiConfig.wps.setup = WpsInfo.PBC;
 
-           mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener(){
-               @Override
-               public void onSuccess() {
-                   // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-                   findViewById(R.id.sendTextBox).setVisibility(View.VISIBLE);
-                   findViewById(R.id.sendTextButton).setVisibility(View.VISIBLE);
-               }
+            mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+                    findViewById(R.id.sendTextBox).setVisibility(View.VISIBLE);
+                    findViewById(R.id.sendTextButton).setVisibility(View.VISIBLE);
+                }
 
-               @Override
-               public void onFailure(int reason) {
-                   Toast.makeText(MainActivity.this, "Connect failed. Retry.",
-                           Toast.LENGTH_SHORT).show();
-               }
-           });
-       }
-       else{
-           Toast.makeText(MainActivity.this, "Select a Device",
-                   Toast.LENGTH_SHORT).show();
-       }
-   }
+                @Override
+                public void onFailure(int reason) {
+                    Toast.makeText(MainActivity.this, "Connect failed. Retry.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "Select a Device",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void newToast(String message)
+    {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
 
 
     @Override
     public void onConnectionInfoAvailable(final WifiP2pInfo p2pInfo) {
         // InetAddress from WifiP2pInfo struct.
-        FileServerAsyncTask handlerThread = new FileServerAsyncTask(this);
+        FileServerAsyncTask receiveData = new FileServerAsyncTask(this);
         if (addressConnectionsList.contains(p2pInfo.groupOwnerAddress)) {
             Toast.makeText(MainActivity.this, "Already connected to peer.", Toast.LENGTH_SHORT).show();
             return;
@@ -294,18 +326,10 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
             Toast.makeText(MainActivity.this, "Group formed, Im the GO!", Toast.LENGTH_SHORT).show();
 
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
-            try {
-                handlerThread.execute();
-                addressConnectionsList.add(InetAddress.getByName(handlerThread.get()));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
+
 
         } else if (p2pInfo.groupFormed) {
+            new Thread(new ClientThread(p2pInfo.groupOwnerAddress, 8888, getDottedDecimalIP(getLocalIPAddress()))).start();
             Toast.makeText(MainActivity.this, "Connected as peer.", Toast.LENGTH_SHORT).show();
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
         }
@@ -313,9 +337,9 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
 
     private byte[] getLocalIPAddress() {
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress()) {
                         if (inetAddress instanceof Inet4Address) { // fix for Galaxy Nexus. IPv4 is easy to use :-)
@@ -336,73 +360,154 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     private String getDottedDecimalIP(byte[] ipAddr) {
         //convert to dotted decimal notation:
         String ipAddrStr = "";
-        for (int i=0; i<ipAddr.length; i++) {
+        for (int i = 0; i < ipAddr.length; i++) {
             if (i > 0) {
                 ipAddrStr += ".";
             }
-            ipAddrStr += ipAddr[i]&0xFF;
+            ipAddrStr += ipAddr[i] & 0xFF;
         }
-        return ipAddrStr;
+        return createJSON(ipAddrStr,"clientIP");
     }
 
 
-    private void sendString(InetAddress targetAddress, String message)
-    {
-        int len;
-        Socket socket = null;
 
-
-        byte buf[]  = new byte[1024];
-
-        try {
-            /**
-             * Create a client socket with the host,
-             * port, and timeout information.
-             */
-
-            if (groupOwnerAddress!=null)
-                socket.connect((new InetSocketAddress(targetAddress, 0)), 500);
-
-            /**
-             * Create a byte stream from a JPEG file and pipe it to the output stream
-             * of the socket. This data will be retrieved by the server device.
-             */
-            OutputStream outputStream = socket.getOutputStream();
-            InputStream inputStream = null;
-            inputStream = new ByteArrayInputStream(message.getBytes());
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
+    protected void sendTextClick(View view) {
+        EditText messageBox = (EditText) findViewById(R.id.sendTextBox);
+        boolean firstIteration = true;
+        for (InetAddress address : addressConnectionsList) {
+            if(firstIteration)
+            {
+                firstIteration = false;
             }
-            outputStream.close();
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            //catch logic
-        } catch (IOException e) {
-            //catch logic
+            else
+            {
+                String message = createJSON(messageBox.getText().toString(),"message");
+                new Thread(new ClientThread(address,8888,message)).start();
+            }
+
+
+
+        }
+    }
+
+    private String createJSON(String message, String tag)
+    {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(tag,message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+    }
+
+    private void parseJSON(String jsonFile)
+    {
+        try {
+            JSONObject object = new JSONObject(jsonFile);
+            if (object.has("clientIP"))
+            {
+                addressConnectionsList.add(InetAddress.getByName(object.getString("clientIP")));
+            }
+            if (object.has("message"))
+            {
+                newToast(object.getString("message"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Threads
+
+    public class ClientThread implements Runnable {
+
+        private InetAddress serverIP;
+        private int serverPort;
+        private String message;
+
+        public ClientThread(InetAddress serverIP, int serverPort, String message) {
+            this.serverIP = serverIP;
+            this.serverPort = serverPort;
+            this.message = message;
         }
 
-/**
- * Clean up any open sockets when done
- * transferring or if an exception occurred.
- */
-        finally {
-            if (socket != null) {
-                if (socket.isConnected()) {
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        //catch logic
-                    }
+        @Override
+        public void run() {
+            try {
+                socket = new Socket(serverIP, serverPort);
+                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                out.println(message);
+            } catch (UnknownHostException e1) {
+                e1.printStackTrace();
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+        }
+    }
+
+    class ServerThread implements Runnable {
+        public void run() {
+            try {
+                serverSocket = new ServerSocket(8888);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Socket stSocket = serverSocket.accept();
+                    CommunicationThread commThread = new CommunicationThread(stSocket);
+                    new Thread(commThread).start();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    protected void sendTextClick (View view) {
-        EditText messageBox = (EditText)findViewById(R.id.sendTextBox);
-        for (InetAddress address:addressConnectionsList)
-        {
-            sendString(address, messageBox.getText().toString());
+    class CommunicationThread implements Runnable {
+        private Socket clientSocket;
+        private BufferedReader input;
+
+        public CommunicationThread(Socket clientSocket) {
+            this.clientSocket = clientSocket;
+            try {
+                this.input = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void run() {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    String read = input.readLine();
+                    updateConversationHandler.post(new updateUIThread(read));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    class updateUIThread implements Runnable {
+        private String msg;
+        public updateUIThread(String str) {
+            this.msg = str;
+        }
+        @Override
+        public void run() {
+            newToast("Message Recieved");
+            parseJSON(msg);
         }
     }
+
+
+
+
 }
