@@ -292,8 +292,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
                 @Override
                 public void onSuccess() {
                     // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-                    findViewById(R.id.sendTextBox).setVisibility(View.VISIBLE);
-                    findViewById(R.id.sendTextButton).setVisibility(View.VISIBLE);
+
                 }
 
                 @Override
@@ -318,6 +317,8 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Co
     public void onConnectionInfoAvailable(final WifiP2pInfo p2pInfo) {
         // InetAddress from WifiP2pInfo struct.
         FileServerAsyncTask receiveData = new FileServerAsyncTask(this);
+        findViewById(R.id.sendTextBox).setVisibility(View.VISIBLE);
+        findViewById(R.id.sendTextButton).setVisibility(View.VISIBLE);
         if (addressConnectionsList.contains(p2pInfo.groupOwnerAddress)) {
             Toast.makeText(MainActivity.this, "Already connected to peer.", Toast.LENGTH_SHORT).show();
             return;
