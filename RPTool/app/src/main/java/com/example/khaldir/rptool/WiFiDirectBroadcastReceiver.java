@@ -43,11 +43,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
             // Determine if Wifi P2P mode is enabled or not, alert
             // the Activity.
             int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
-            if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
-                mActivity.setIsWifiP2pEnabled(true);
-            } else {
-                mActivity.setIsWifiP2pEnabled(false);
-            }
+
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
 
             // Request available peers from the wifi p2p manager. This is an
@@ -71,7 +67,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 // We are connected with the other device, request connection
                 // info to find group owner IP
 
-                mManager.requestConnectionInfo(mChannel, mActivity);
+                mManager.requestConnectionInfo(mChannel, WiFiDirect.getInstance(context));
 
                 Toast.makeText(mActivity, "Connected.",
                         Toast.LENGTH_SHORT).show();
