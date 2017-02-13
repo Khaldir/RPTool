@@ -36,6 +36,42 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.khaldir.rptool.MainActivity" />
         </activity>
+        <activity
+            android:name=".ShieldsActivity"
+            android:label="@string/title_activity_shields"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
+        <activity
+            android:name=".WeaponsActivity"
+            android:label="@string/title_activity_weapons"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PilotActivity"
+            android:label="@string/title_activity_pilot"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SensorActivity"
+            android:label="@string/title_activity_sensor"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

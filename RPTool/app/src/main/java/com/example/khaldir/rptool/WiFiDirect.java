@@ -74,11 +74,24 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     Thread serverThread;
 
     //Fields
+    //All
     int EnginePower;
+
+    //Engines
     int PilotEnergyIn;
     int SensorEnergyIn;
     int WeaponEnergyIn;
     int ShieldEnergyIn;
+
+    //Shields
+    int frontShields;
+    int leftShields;
+    int rightShields;
+    int rearShields;
+    int frontShieldHP;
+    int leftShieldHP;
+    int rightShieldHP;
+    int rearShieldHP;
 
     private WiFiDirect(final Context context) {
         this.context = context;
@@ -162,13 +175,29 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("maxEnginePower"))
                     EnginePower = Integer.getInteger(object.getString("maxEnginePower"));
                 else if (object.has("pilotEnergyIn"))
-                    PilotEnergyIn = Integer.getInteger(object.getString("pilotEnergyIn"));
+                    PilotEnergyIn = object.getInt("pilotEnergyIn");
                 else if (object.has("shieldEnergyIn"))
-                    ShieldEnergyIn = Integer.getInteger(object.getString("shieldEnergyIn"));
+                    ShieldEnergyIn = object.getInt("shieldEnergyIn");
                 else if (object.has("weaponEnergyIn"))
-                    WeaponEnergyIn = Integer.getInteger(object.getString("weaponEnergyIn"));
+                    WeaponEnergyIn = object.getInt("weaponEnergyIn");
                 else if (object.has("scannerEnergyIn"))
-                    SensorEnergyIn = Integer.getInteger(object.getString("scannerEnergyIn"));
+                    SensorEnergyIn = object.getInt("scannerEnergyIn");
+                else if (object.has("frontShields"))
+                    frontShields = Integer.getInteger(object.getString("frontShields"));
+                else if (object.has("leftShields"))
+                    leftShields = Integer.getInteger(object.getString("leftShields"));
+                else if (object.has("rightShields"))
+                    rightShields = Integer.getInteger(object.getString("rightShields"));
+                else if (object.has("rearShields"))
+                    rearShields = Integer.getInteger(object.getString("rearShields"));
+                else if (object.has("frontShieldHP"))
+                    frontShieldHP = Integer.getInteger(object.getString("frontShieldHP"));
+                else if (object.has("leftShieldHP"))
+                    leftShieldHP = Integer.getInteger(object.getString("leftShieldHP"));
+                else if (object.has("rightShieldHP"))
+                    rightShieldHP = Integer.getInteger(object.getString("rightShieldHP"));
+                else if (object.has("rearShieldHP"))
+                    rearShieldHP = Integer.getInteger(object.getString("rearShieldHP"));
                 else
                 {
                     Utilities.newToast(context, jsonFile);
@@ -261,6 +290,16 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     {
         String message = Utilities.createJSON(value,tag);
         new Thread(new ClientThread(recipient, 8888, message)).start();
+    }
+
+    public void sendValue(String tag, String value)
+    {
+        String message = Utilities.createJSON(value,tag);
+        for (InetAddress recipient:addressConnectionsList
+             )
+        {
+            new Thread(new ClientThread(recipient, 8888, message)).start();
+        }
     }
 
     // Threads

@@ -13,24 +13,41 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
-public class EngineActivity extends AppCompatActivity
+public class ShieldsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WiFiDirect wifiObject;
 
-    SeekBar pilotBar;
-    SeekBar shieldBar;
-    SeekBar weaponBar;
-    SeekBar scannerBar;
+    // Bars to input shield strength
+    SeekBar frontBar;
+    SeekBar leftBar;
+    SeekBar rightBar;
+    SeekBar backBar;
+
+    ProgressBar availablePowerBar;
+    // Bars to show the shield strength once submitted
+    ProgressBar front;
+    ProgressBar left;
+    ProgressBar right;
+    ProgressBar back;
+
+    Button goButton;
 
     int maxEngineOutput;
+    int availablePower;
+
+    // Shows whether shields are editable
+    boolean isEditable;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_engine);
+        setContentView(R.layout.activity_shields);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,38 +70,47 @@ public class EngineActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
+        frontBar = (SeekBar) findViewById(R.id.frontShields);
+        leftBar = (SeekBar) findViewById(R.id.leftShields);
+        rightBar = (SeekBar) findViewById(R.id.rightShields);
+        backBar = (SeekBar) findViewById(R.id.backShields);
 
-        pilotBar = (SeekBar) findViewById(R.id.pilotEnergy);
-        shieldBar = (SeekBar) findViewById(R.id.shieldEnergy);
-        weaponBar = (SeekBar) findViewById(R.id.weaponEnergy);
-        scannerBar = (SeekBar) findViewById(R.id.scannerEnergy);
+        availablePowerBar = (ProgressBar) findViewById(R.id.maxShieldEnergy);
+        front = (ProgressBar) findViewById(R.id.frontShieldProg);
+        left = (ProgressBar) findViewById(R.id.leftShieldProg);
+        right = (ProgressBar) findViewById(R.id.rightShieldProg);
+        back = (ProgressBar) findViewById(R.id.backShieldProg);
 
         maxEngineOutput = wifiObject.EnginePower;
+        availablePowerBar.setMax(maxEngineOutput);
+        availablePower = wifiObject.ShieldEnergyIn;
+        availablePowerBar.setProgress(availablePower);
 
-        pilotBar.setMax(maxEngineOutput);
-        shieldBar.setMax(maxEngineOutput);
-        weaponBar.setMax(maxEngineOutput);
-        scannerBar.setMax(maxEngineOutput);
+        goButton = (Button) findViewById(R.id.updateShields);
     }
 
-    protected void submitEnergy(View sender) {
-        if (pilotBar.getProgress() + shieldBar.getProgress() + weaponBar.getProgress() + scannerBar.getProgress() <= maxEngineOutput)
+    protected void updateShields(View sender)
+    {
+        if (frontBar.getProgress() + leftBar.getProgress() + rightBar.getProgress() + backBar.getProgress() <= availablePower)
         {
-            wifiObject.sendValue("pilotEnergyIn", String.valueOf(pilotBar.getProgress()));
-            wifiObject.PilotEnergyIn = pilotBar.getProgress();
-            wifiObject.sendValue("shieldEnergyIn", String.valueOf(shieldBar.getProgress()));
-            wifiObject.ShieldEnergyIn = shieldBar.getProgress();
-            wifiObject.sendValue("weaponEnergyIn", String.valueOf(weaponBar.getProgress()));
-            wifiObject.WeaponEnergyIn = weaponBar.getProgress();
-            wifiObject.sendValue("scannerEnergyIn", String.valueOf(scannerBar.getProgress()));
-            wifiObject.SensorEnergyIn = scannerBar.getProgress();
+            if(isEditable)
+            {
+                frontBar.setVisibility(View.INVISIBLE);
+                leftBar.setVisibility(View.INVISIBLE);
+                rightBar.setVisibility(View.INVISIBLE);
+                backBar.setVisibility(View.INVISIBLE);
+                front.setVisibility(View.VISIBLE);
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.VISIBLE);
+                back.setVisibility(View.VISIBLE);
+                wifiObject.sendValue("frontShields",String.valueOf(frontBar.getProgress()));
+                wifiObject.sendValue("leftShields",String.valueOf(leftBar.getProgress()));
+                wifiObject.sendValue("rightShields",String.valueOf(rightBar.getProgress()));
+                wifiObject.sendValue("rearShields",String.valueOf(backBar.getProgress()));
+                goButton.setVisibility(View.INVISIBLE);
+                isEditable = !isEditable;
+            }
         }
-        else
-        {
-            Utilities.newToast(this,"Overallocated Power!");
-        }
-        if (maxEngineOutput != wifiObject.EnginePower)
-            maxEngineOutput = wifiObject.EnginePower;
     }
 
     @Override
@@ -100,7 +126,7 @@ public class EngineActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.engine, menu);
+        getMenuInflater().inflate(R.menu.shields, menu);
         return true;
     }
 
@@ -134,12 +160,12 @@ public class EngineActivity extends AppCompatActivity
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
-        } else if (id == R.id.nav_shields) {
-            if (wifiObject.shieldIP == null)
+        } else if (id == R.id.nav_engines) {
+            if (wifiObject.engineIP == null)
             {
-                wifiObject.engineIP = null;
-                Intent shieldIntent = new Intent(this,ShieldsActivity.class);
-                this.startActivity(shieldIntent);
+                wifiObject.shieldIP = null;
+                Intent engineIntent = new Intent(this,EngineActivity.class);
+                this.startActivity(engineIntent);
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
@@ -161,16 +187,12 @@ public class EngineActivity extends AppCompatActivity
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
-        } else if (id == R.id.nav_engines) {
-        Utilities.newToast(this,"You are already at the Engines!");
+        } else if (id == R.id.nav_shields) {
+            Utilities.newToast(this,"You are already at the Shields!");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
 }

@@ -5,23 +5,23 @@
         <item
             android:id="@+id/nav_pilot"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Pilot" />
+            android:title="Pilot"/>
         <item
             android:id="@+id/nav_shields"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Shields" />
+            android:title="Shields"/>
         <item
             android:id="@+id/nav_weapons"
             android:icon="@drawable/ic_menu_send"
-            android:title="Weapons" />
+            android:title="Weapons"/>
         <item
             android:id="@+id/nav_sensors"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Sensors" />
+            android:title="Sensors"/>
         <item
             android:id="@+id/nav_engines"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Engines" />
+            android:title="Engines"/>
     </group>
 
     <item android:title="Settings">

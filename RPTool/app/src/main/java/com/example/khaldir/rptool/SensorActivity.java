@@ -13,24 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SeekBar;
 
-public class EngineActivity extends AppCompatActivity
+public class SensorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WiFiDirect wifiObject;
 
-    SeekBar pilotBar;
-    SeekBar shieldBar;
-    SeekBar weaponBar;
-    SeekBar scannerBar;
-
-    int maxEngineOutput;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_engine);
+        setContentView(R.layout.activity_sensor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,38 +45,6 @@ public class EngineActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
-
-        pilotBar = (SeekBar) findViewById(R.id.pilotEnergy);
-        shieldBar = (SeekBar) findViewById(R.id.shieldEnergy);
-        weaponBar = (SeekBar) findViewById(R.id.weaponEnergy);
-        scannerBar = (SeekBar) findViewById(R.id.scannerEnergy);
-
-        maxEngineOutput = wifiObject.EnginePower;
-
-        pilotBar.setMax(maxEngineOutput);
-        shieldBar.setMax(maxEngineOutput);
-        weaponBar.setMax(maxEngineOutput);
-        scannerBar.setMax(maxEngineOutput);
-    }
-
-    protected void submitEnergy(View sender) {
-        if (pilotBar.getProgress() + shieldBar.getProgress() + weaponBar.getProgress() + scannerBar.getProgress() <= maxEngineOutput)
-        {
-            wifiObject.sendValue("pilotEnergyIn", String.valueOf(pilotBar.getProgress()));
-            wifiObject.PilotEnergyIn = pilotBar.getProgress();
-            wifiObject.sendValue("shieldEnergyIn", String.valueOf(shieldBar.getProgress()));
-            wifiObject.ShieldEnergyIn = shieldBar.getProgress();
-            wifiObject.sendValue("weaponEnergyIn", String.valueOf(weaponBar.getProgress()));
-            wifiObject.WeaponEnergyIn = weaponBar.getProgress();
-            wifiObject.sendValue("scannerEnergyIn", String.valueOf(scannerBar.getProgress()));
-            wifiObject.SensorEnergyIn = scannerBar.getProgress();
-        }
-        else
-        {
-            Utilities.newToast(this,"Overallocated Power!");
-        }
-        if (maxEngineOutput != wifiObject.EnginePower)
-            maxEngineOutput = wifiObject.EnginePower;
     }
 
     @Override
@@ -100,7 +60,7 @@ public class EngineActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.engine, menu);
+        getMenuInflater().inflate(R.menu.sensor, menu);
         return true;
     }
 
@@ -153,24 +113,20 @@ public class EngineActivity extends AppCompatActivity
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_sensors) {
-            if (wifiObject.scannerIP == null)
+            if (wifiObject.engineIP == null)
             {
-                wifiObject.engineIP = null;
-                Intent sensorIntent = new Intent(this,SensorActivity.class);
-                this.startActivity(sensorIntent);
+                wifiObject.scannerIP = null;
+                Intent engineIntent = new Intent(this,EngineActivity.class);
+                this.startActivity(engineIntent);
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
-        } else if (id == R.id.nav_engines) {
-        Utilities.newToast(this,"You are already at the Engines!");
+        } else if (id == R.id.nav_sensors) {
+            Utilities.newToast(this,"You are already at the Sensors!");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
 }
