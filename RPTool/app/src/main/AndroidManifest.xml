@@ -28,9 +28,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlayerActivity"
-            android:label="@string/title_activity_player"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".EngineActivity"
+            android:label="@string/title_activity_engine"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

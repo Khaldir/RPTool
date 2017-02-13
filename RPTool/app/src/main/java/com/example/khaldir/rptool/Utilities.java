@@ -73,7 +73,7 @@ public class Utilities {
             }
             ipAddrStr += ipAddr[i] & 0xFF;
         }
-        return createJSON(ipAddrStr,"clientIP");
+        return ipAddrStr;
     }
 
     public static String createJSON(String message, String tag)
