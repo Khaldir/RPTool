@@ -155,6 +155,8 @@ public class ShieldsActivity extends ReactorClass
                 reactToChanges();
             }
         }
+        else
+            Utilities.newSnackbar(sender,"Not Enough Power!");
     }
 
     @Override

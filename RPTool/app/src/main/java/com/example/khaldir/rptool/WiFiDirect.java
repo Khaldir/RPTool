@@ -194,21 +194,21 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("scannerEnergyIn"))
                     SensorEnergyIn = object.getInt("scannerEnergyIn");
                 else if (object.has("frontShields"))
-                    frontShields = Integer.getInteger(object.getString("frontShields"));
+                    frontShields = object.getInt("frontShields");
                 else if (object.has("leftShields"))
-                    leftShields = Integer.getInteger(object.getString("leftShields"));
+                    leftShields = object.getInt("leftShields");
                 else if (object.has("rightShields"))
-                    rightShields = Integer.getInteger(object.getString("rightShields"));
+                    rightShields = object.getInt("rightShields");
                 else if (object.has("rearShields"))
-                    rearShields = Integer.getInteger(object.getString("rearShields"));
+                    rearShields = object.getInt("rearShields");
                 else if (object.has("frontShieldHP"))
-                    frontShieldHP = Integer.getInteger(object.getString("frontShieldHP"));
+                    frontShieldHP = object.getInt("frontShieldHP");
                 else if (object.has("leftShieldHP"))
-                    leftShieldHP = Integer.getInteger(object.getString("leftShieldHP"));
+                    leftShieldHP = object.getInt("leftShieldHP");
                 else if (object.has("rightShieldHP"))
-                    rightShieldHP = Integer.getInteger(object.getString("rightShieldHP"));
+                    rightShieldHP = object.getInt("rightShieldHP");
                 else if (object.has("rearShieldHP"))
-                    rearShieldHP = Integer.getInteger(object.getString("rearShieldHP"));
+                    rearShieldHP = object.getInt("rearShieldHP");
                 else
                 {
                     Utilities.newToast(context, jsonFile);
