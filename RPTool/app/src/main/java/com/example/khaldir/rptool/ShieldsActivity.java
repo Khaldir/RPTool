@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
-public class ShieldsActivity extends AppCompatActivity
+public class ShieldsActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WiFiDirect wifiObject;
@@ -87,6 +87,31 @@ public class ShieldsActivity extends AppCompatActivity
         availablePowerBar.setProgress(availablePower);
 
         goButton = (Button) findViewById(R.id.updateShields);
+
+        isEditable = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wifiObject.reconnect();
+    }
+
+    @Override
+    public void reactToChanges()
+    {
+        maxEngineOutput = wifiObject.EnginePower;
+        availablePowerBar.setMax(maxEngineOutput);
+        availablePower = wifiObject.ShieldEnergyIn;
+        availablePowerBar.setProgress(availablePower);
+        left.setProgress(wifiObject.leftShieldHP);
+        leftBar.setProgress(wifiObject.leftShields);
+        right.setProgress(wifiObject.rightShieldHP);
+        rightBar.setProgress(wifiObject.rightShields);
+        front.setProgress(wifiObject.frontShieldHP);
+        frontBar.setProgress(wifiObject.frontShields);
+        back.setProgress(wifiObject.rearShieldHP);
+        backBar.setProgress(wifiObject.rearShields);
     }
 
     protected void updateShields(View sender)
@@ -100,15 +125,34 @@ public class ShieldsActivity extends AppCompatActivity
                 rightBar.setVisibility(View.INVISIBLE);
                 backBar.setVisibility(View.INVISIBLE);
                 front.setVisibility(View.VISIBLE);
+                front.setMax(frontBar.getProgress());
                 left.setVisibility(View.VISIBLE);
+                left.setMax(leftBar.getProgress());
                 right.setVisibility(View.VISIBLE);
+                right.setMax(rightBar.getProgress());
                 back.setVisibility(View.VISIBLE);
-                wifiObject.sendValue("frontShields",String.valueOf(frontBar.getProgress()));
-                wifiObject.sendValue("leftShields",String.valueOf(leftBar.getProgress()));
-                wifiObject.sendValue("rightShields",String.valueOf(rightBar.getProgress()));
-                wifiObject.sendValue("rearShields",String.valueOf(backBar.getProgress()));
+                back.setMax(backBar.getProgress());
+                wifiObject.sendValue("frontShields",String.valueOf(frontBar.getProgress()),wifiObject.gmIP);
+                wifiObject.sendValue("leftShields",String.valueOf(leftBar.getProgress()),wifiObject.gmIP);
+                wifiObject.sendValue("rightShields",String.valueOf(rightBar.getProgress()),wifiObject.gmIP);
+                wifiObject.sendValue("rearShields",String.valueOf(backBar.getProgress()),wifiObject.gmIP);
                 goButton.setVisibility(View.INVISIBLE);
                 isEditable = !isEditable;
+                reactToChanges();
+            }
+            else
+            {
+                frontBar.setVisibility(View.VISIBLE);
+                leftBar.setVisibility(View.VISIBLE);
+                rightBar.setVisibility(View.VISIBLE);
+                backBar.setVisibility(View.VISIBLE);
+                front.setVisibility(View.INVISIBLE);
+                left.setVisibility(View.INVISIBLE);
+                right.setVisibility(View.INVISIBLE);
+                back.setVisibility(View.INVISIBLE);
+                goButton.setVisibility(View.VISIBLE);
+                isEditable = !isEditable;
+                reactToChanges();
             }
         }
     }

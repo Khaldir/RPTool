@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PilotActivity extends AppCompatActivity
+public class PilotActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WiFiDirect wifiObject;
@@ -45,6 +45,12 @@ public class PilotActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wifiObject.reconnect();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.khaldir.rptool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SeekBar;
 
-public class EngineActivity extends AppCompatActivity
+public class EngineActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
     WiFiDirect wifiObject;
@@ -26,6 +27,8 @@ public class EngineActivity extends AppCompatActivity
     SeekBar scannerBar;
 
     int maxEngineOutput;
+
+    Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +68,40 @@ public class EngineActivity extends AppCompatActivity
         shieldBar.setMax(maxEngineOutput);
         weaponBar.setMax(maxEngineOutput);
         scannerBar.setMax(maxEngineOutput);
+
+
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wifiObject.reconnect();
+    }
+
+    @Override
+    public void reactToChanges()
+    {
+        maxEngineOutput = wifiObject.EnginePower;
+
+        pilotBar.setMax(maxEngineOutput);
+        shieldBar.setMax(maxEngineOutput);
+        weaponBar.setMax(maxEngineOutput);
+        scannerBar.setMax(maxEngineOutput);
     }
 
     protected void submitEnergy(View sender) {
         if (pilotBar.getProgress() + shieldBar.getProgress() + weaponBar.getProgress() + scannerBar.getProgress() <= maxEngineOutput)
         {
-            wifiObject.sendValue("pilotEnergyIn", String.valueOf(pilotBar.getProgress()));
+            wifiObject.sendValue("pilotEnergyIn", String.valueOf(pilotBar.getProgress()),wifiObject.gmIP);
             wifiObject.PilotEnergyIn = pilotBar.getProgress();
-            wifiObject.sendValue("shieldEnergyIn", String.valueOf(shieldBar.getProgress()));
+            wifiObject.sendValue("shieldEnergyIn", String.valueOf(shieldBar.getProgress()),wifiObject.gmIP);
             wifiObject.ShieldEnergyIn = shieldBar.getProgress();
-            wifiObject.sendValue("weaponEnergyIn", String.valueOf(weaponBar.getProgress()));
+            wifiObject.sendValue("weaponEnergyIn", String.valueOf(weaponBar.getProgress()),wifiObject.gmIP);
             wifiObject.WeaponEnergyIn = weaponBar.getProgress();
-            wifiObject.sendValue("scannerEnergyIn", String.valueOf(scannerBar.getProgress()));
+            wifiObject.sendValue("scannerEnergyIn", String.valueOf(scannerBar.getProgress()),wifiObject.gmIP);
             wifiObject.SensorEnergyIn = scannerBar.getProgress();
         }
         else

@@ -9,10 +9,9 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -29,7 +28,7 @@
         </activity>
         <activity
             android:name=".EngineActivity"
-            android:label="@string/title_activity_engine"
+            android:label="Engines"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -47,7 +46,7 @@
         </activity>
         <activity
             android:name=".WeaponsActivity"
-            android:label="@string/title_activity_weapons"
+            android:label="Weapons"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -56,7 +55,7 @@
         </activity>
         <activity
             android:name=".PilotActivity"
-            android:label="@string/title_activity_pilot"
+            android:label="Piloting"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -65,7 +64,7 @@
         </activity>
         <activity
             android:name=".SensorActivity"
-            android:label="@string/title_activity_sensor"
+            android:label="Sensors"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

@@ -39,7 +39,7 @@ import static android.os.Looper.getMainLooper;
 public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     private static WiFiDirect ourInstance = null;
 
-    public static WiFiDirect getInstance(Context context)
+    public static WiFiDirect getInstance(ReactorClass context)
     {
         if (ourInstance == null)
             ourInstance = new WiFiDirect(context);
@@ -48,8 +48,14 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         return ourInstance;
     }
 
+    public static WiFiDirect getInstance()
+    {
+        return ourInstance;
+    }
+
     //Listens for WiFi events
     public final IntentFilter intentFilter = new IntentFilter();
+
     //Handlers
     Handler updateConversationHandler;
 
@@ -68,10 +74,12 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
 
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
-    Context context;
+    ReactorClass context;
 
     //Threads
     Thread serverThread;
+
+    boolean isGroupOwner;
 
     //Fields
     //All
@@ -93,7 +101,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     int rightShieldHP;
     int rearShieldHP;
 
-    private WiFiDirect(final Context context) {
+    private WiFiDirect(final ReactorClass context) {
         this.context = context;
 
         peers = new ArrayList<WifiP2pDevice>();
@@ -132,6 +140,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         this.serverThread.start();
 
         EnginePower = 10;
+
+        isGroupOwner = false;
     }
 
     public void disconnect() {
@@ -165,11 +175,12 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     {
         if (jsonFile != null)
         {
-            try
-            {
+            try {
                 JSONObject object = new JSONObject(jsonFile);
-                if (object.has("clientIP"))
+                if (object.has("clientIP") && !addressConnectionsList.contains(InetAddress.getByName(object.getString("clientIP"))))
+                {
                     addressConnectionsList.add(InetAddress.getByName(object.getString("clientIP")));
+                }
                 else if (object.has("message"))
                     Utilities.newToast(context, object.getString("message"));
                 else if (object.has("maxEnginePower"))
@@ -202,6 +213,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 {
                     Utilities.newToast(context, jsonFile);
                 }
+                context.reactToChanges();
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (UnknownHostException e) {
@@ -258,6 +270,28 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
     }
 
+    public void reconnect()
+    {
+        for (InetAddress address:addressConnectionsList)
+        {
+            WifiP2pConfig WiFiConfig = new WifiP2pConfig();
+            WiFiConfig.deviceAddress = address.getHostAddress();
+            WiFiConfig.wps.setup = WpsInfo.PBC;
+            mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Utilities.newToast(context,"Connect failed. Retry. Err:" + reason);
+                }
+            });
+        }
+    }
+
     @Override
     public void onConnectionInfoAvailable(final WifiP2pInfo p2pInfo) {
         // InetAddress from WifiP2pInfo struct.
@@ -267,11 +301,12 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
         if (p2pInfo.isGroupOwner && p2pInfo.groupFormed) {
             Utilities.newToast(context,"Group formed, Im the GO!");
-
+            isGroupOwner = true;
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
 
 
         } else if (p2pInfo.groupFormed) {
+            isGroupOwner = false;
             gmIP = p2pInfo.groupOwnerAddress;
             sendValue("clientIP",Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),gmIP);
             new Thread(new ClientThread(p2pInfo.groupOwnerAddress, 8888, Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()))).start();
@@ -292,13 +327,15 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         new Thread(new ClientThread(recipient, 8888, message)).start();
     }
 
-    public void sendValue(String tag, String value)
+    public void sendValue(String message)
     {
-        String message = Utilities.createJSON(value,tag);
-        for (InetAddress recipient:addressConnectionsList
-             )
+        boolean firstAddress = true;
+        for (InetAddress recipient:addressConnectionsList)
         {
-            new Thread(new ClientThread(recipient, 8888, message)).start();
+            // First address is always the gm Device
+            if(!firstAddress)
+                new Thread(new ClientThread(recipient, 8888, message)).start();
+            firstAddress = false;
         }
     }
 
@@ -390,7 +427,13 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
         @Override
         public void run() {
-            Utilities.newToast(context,"Message Recieved");
+            if (isGroupOwner)
+            {
+                Utilities.newToast(context,"Sending to all");
+                sendValue(msg);
+            }
+            else
+                Utilities.newToast(context,"Message Recieved");
             parseJSON(msg);
             return;
         }

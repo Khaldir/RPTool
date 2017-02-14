@@ -59,11 +59,11 @@ import static android.R.attr.visible;
 import static android.os.Looper.getMainLooper;
 import static java.util.Collections.addAll;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ReactorClass {
 
     // Global Variables
 
-    Context context = this;
+    ReactorClass context = this;
 
     WiFiDirect wifiObject;
 

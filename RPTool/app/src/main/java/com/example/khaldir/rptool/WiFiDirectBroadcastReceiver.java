@@ -59,15 +59,14 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
                 return;
             }
 
-            NetworkInfo networkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
+            NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra(WifiP2pManager.EXTRA_NETWORK_INFO);
 
             if (networkInfo.isConnected()) {
 
                 // We are connected with the other device, request connection
                 // info to find group owner IP
 
-                mManager.requestConnectionInfo(mChannel, WiFiDirect.getInstance(context));
+                mManager.requestConnectionInfo(mChannel, WiFiDirect.getInstance());
 
                 Toast.makeText(mActivity, "Connected.",
                         Toast.LENGTH_SHORT).show();
