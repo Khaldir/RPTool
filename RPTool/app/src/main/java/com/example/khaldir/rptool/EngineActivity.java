@@ -106,7 +106,7 @@ public class EngineActivity extends ReactorClass
         }
         else
         {
-            Utilities.newToast(this,"Overallocated Power!");
+            Utilities.newSnackbar(sender,"Overallocated Power!");
         }
         if (maxEngineOutput != wifiObject.EnginePower)
             maxEngineOutput = wifiObject.EnginePower;
