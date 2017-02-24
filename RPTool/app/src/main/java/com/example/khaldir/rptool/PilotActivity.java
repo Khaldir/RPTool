@@ -1,6 +1,7 @@
 package com.example.khaldir.rptool;
 
 import android.content.Intent;
+import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,11 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class PilotActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    WiFiDirect wifiObject;
+
+    int maxEngineOutput;
+    int availablePower;
+
+    TextView speed;
+    int speedVal;
+    TextView dodge;
+    int dodgeVal;
+
+    ProgressBar availablePowerBar;
+
+    SeekBar distBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +60,60 @@ public class PilotActivity extends ReactorClass
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
+        maxEngineOutput = wifiObject.EnginePower;
+        availablePower = wifiObject.PilotEnergyIn;
+
+        speed = (TextView) findViewById(R.id.speedVal);
+        dodge = (TextView) findViewById(R.id.dodgeVal);
+
+        availablePowerBar = (ProgressBar) findViewById(R.id.maxPilotEnergy);
+        availablePowerBar.setMax(maxEngineOutput);
+        availablePowerBar.setProgress(availablePower);
+
+        distBar = (SeekBar) findViewById(R.id.pilotDistribution);
+        distBar.setMax(availablePower);
+        distBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser)
+            {
+                //Determine Speed
+                speedVal = distBar.getProgress();
+                //Determine Dodge [speedVal + dodgeVal = getMax()]
+                dodgeVal = distBar.getMax()-speedVal;
+                //Show Values;
+                speed.setText(speedVal*wifiObject.speedMultiplier);
+                dodge.setText(dodgeVal);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        wifiObject.currentLocation = 1;
+
+    }
+
+    protected void updatePilot(View sender) {
+        wifiObject.sendValue("speed",String.valueOf(speedVal),wifiObject.gmIP);
+        wifiObject.sendValue("dodge",String.valueOf(dodgeVal),wifiObject.gmIP);
+    }
+
+
+
+    @Override
+    public void reactToChanges() {
+        maxEngineOutput = wifiObject.EnginePower;
+        availablePower = wifiObject.PilotEnergyIn;
+        speedVal = wifiObject.speed;
+        dodgeVal = wifiObject.dodge;
+        distBar.setEnabled(wifiObject.isPilotEditable);
     }
 
     @Override

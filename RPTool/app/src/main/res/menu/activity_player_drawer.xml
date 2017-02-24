@@ -24,17 +24,9 @@
             android:title="Engines"/>
     </group>
 
-    <item android:title="Settings">
-        <menu>
-            <item
-                android:id="@+id/nav_connect"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Connection" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Preferences" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/nav_connect"
+        android:icon="@drawable/ic_menu_share"
+        android:title="Connection" />
 
 </menu>

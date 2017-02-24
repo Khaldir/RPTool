@@ -20,7 +20,6 @@ import android.widget.SeekBar;
 public class ShieldsActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    WiFiDirect wifiObject;
 
     // Bars to input shield strength
     SeekBar frontBar;
@@ -39,9 +38,6 @@ public class ShieldsActivity extends ReactorClass
 
     int maxEngineOutput;
     int availablePower;
-
-    // Shows whether shields are editable
-    boolean isEditable;
 
 
     @Override
@@ -88,7 +84,7 @@ public class ShieldsActivity extends ReactorClass
 
         goButton = (Button) findViewById(R.id.updateShields);
 
-        isEditable = true;
+        wifiObject.currentLocation = 2;
     }
 
     @Override
@@ -118,7 +114,7 @@ public class ShieldsActivity extends ReactorClass
     {
         if (frontBar.getProgress() + leftBar.getProgress() + rightBar.getProgress() + backBar.getProgress() <= availablePower)
         {
-            if(isEditable)
+            if(wifiObject.isShieldsEditable)
             {
                 frontBar.setVisibility(View.INVISIBLE);
                 leftBar.setVisibility(View.INVISIBLE);
@@ -137,26 +133,24 @@ public class ShieldsActivity extends ReactorClass
                 wifiObject.sendValue("rightShields",String.valueOf(rightBar.getProgress()),wifiObject.gmIP);
                 wifiObject.sendValue("rearShields",String.valueOf(backBar.getProgress()),wifiObject.gmIP);
                 goButton.setVisibility(View.INVISIBLE);
-                isEditable = !isEditable;
-                reactToChanges();
-            }
-            else
-            {
-                frontBar.setVisibility(View.VISIBLE);
-                leftBar.setVisibility(View.VISIBLE);
-                rightBar.setVisibility(View.VISIBLE);
-                backBar.setVisibility(View.VISIBLE);
-                front.setVisibility(View.INVISIBLE);
-                left.setVisibility(View.INVISIBLE);
-                right.setVisibility(View.INVISIBLE);
-                back.setVisibility(View.INVISIBLE);
-                goButton.setVisibility(View.VISIBLE);
-                isEditable = !isEditable;
                 reactToChanges();
             }
         }
         else
-            Utilities.newSnackbar(sender,"Not Enough Power!");
+            Utilities.newSnackbar(this,"Not Enough Power!");
+        if (!wifiObject.isShieldsEditable)
+        {
+            frontBar.setVisibility(View.VISIBLE);
+            leftBar.setVisibility(View.VISIBLE);
+            rightBar.setVisibility(View.VISIBLE);
+            backBar.setVisibility(View.VISIBLE);
+            front.setVisibility(View.INVISIBLE);
+            left.setVisibility(View.INVISIBLE);
+            right.setVisibility(View.INVISIBLE);
+            back.setVisibility(View.INVISIBLE);
+            goButton.setVisibility(View.VISIBLE);
+            reactToChanges();
+        }
     }
 
     @Override

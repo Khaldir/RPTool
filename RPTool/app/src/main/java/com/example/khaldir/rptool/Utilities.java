@@ -37,9 +37,9 @@ public class Utilities {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void newSnackbar(View view, String message)
+    public static void newSnackbar(Context context, String message)
     {
-        Snackbar.make(view,message,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(new View(context),message,Snackbar.LENGTH_SHORT).show();
     }
 
     public static byte[] getLocalIPAddress() {
@@ -79,12 +79,14 @@ public class Utilities {
     public static String createJSON(String message, String tag)
     {
         JSONObject jsonObject = new JSONObject();
+        JSONObject jsonSubObject = new JSONObject();
         try {
-            jsonObject.put(tag,message);
+            jsonSubObject.put(tag,message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject.toString();
     }
+
 
 }

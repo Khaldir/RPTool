@@ -65,7 +65,6 @@ public class MainActivity extends ReactorClass {
 
     ReactorClass context = this;
 
-    WiFiDirect wifiObject;
 
     //Broadcast receiver
     WiFiDirectBroadcastReceiver receiver;
@@ -76,6 +75,8 @@ public class MainActivity extends ReactorClass {
     //Connect Button
     private Button connectButton;
 
+    boolean isConnected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,11 +86,13 @@ public class MainActivity extends ReactorClass {
 
         wifiObject = WiFiDirect.getInstance(context);
 
+        isConnected = false;
         deviceSpinner = (Spinner) findViewById(R.id.deviceList);
         connectButton = (Button) findViewById(R.id.connectButton);
         peerListListener = new WifiP2pManager.PeerListListener() {
             @Override
-            public void onPeersAvailable(WifiP2pDeviceList peerList) {
+            public void onPeersAvailable(WifiP2pDeviceList peerList)
+            {
                 wifiObject.peerListFill(peerList);
 
                 deviceSpinner.setAdapter(wifiObject.mAdapter);
@@ -168,7 +171,29 @@ public class MainActivity extends ReactorClass {
 
 
     protected void connectToDevice(View view) {
-        wifiObject.connectToDevice();
+        if(isConnected)
+            if(wifiObject.isGroupOwner)
+            {
+                //Intent intent = new Intent(context,GMActivity.class);
+                //context.startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(context,PlayerActivity.class);
+                context.startActivity(intent);
+            }
+
+        else
+        {
+            isConnected = wifiObject.connectToDevice();
+            if (isConnected)
+                if(wifiObject.isGroupOwner)
+                    connectButton.setText("Go to GM Screen");
+                else
+                    connectButton.setText("Go to Player Screen");
+        }
+
+
     }
 
 

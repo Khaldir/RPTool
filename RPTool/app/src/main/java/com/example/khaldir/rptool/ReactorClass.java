@@ -7,8 +7,16 @@ import android.support.v7.app.AppCompatActivity;
  */
 
 public class ReactorClass extends AppCompatActivity {
+
+    WiFiDirect wifiObject;
+
     public void reactToChanges()
     {
 
+    }
+
+    public void sendLocation(String location)
+    {
+        wifiObject.sendValue(location,Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),wifiObject.gmIP);
     }
 }

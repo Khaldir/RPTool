@@ -17,7 +17,6 @@ import android.view.MenuItem;
 public class SensorActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    WiFiDirect wifiObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,8 @@ public class SensorActivity extends ReactorClass
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
+        wifiObject.currentLocation = 4;
+        sendLocation("scanner");
     }
 
     @Override

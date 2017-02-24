@@ -17,7 +17,6 @@ import android.view.MenuItem;
 public class WeaponsActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    WiFiDirect wifiObject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +44,7 @@ public class WeaponsActivity extends ReactorClass
         navigationView.setNavigationItemSelectedListener(this);
 
         wifiObject = WiFiDirect.getInstance(this);
+        wifiObject.currentLocation = 3;
     }
 
     @Override
