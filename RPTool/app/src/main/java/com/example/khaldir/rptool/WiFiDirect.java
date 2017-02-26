@@ -124,9 +124,9 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
 
     //Scanners
     int scanPool;
-    Set<String> scanData;
+    List<ScanItem> scanData;
     int enemyCount;
-    Set<String> enemyDetail;
+    List<ScanItem> enemyDetail;
     int shipHealth;
     boolean isScannerEditable;
 
@@ -271,11 +271,19 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("scanPool"))
                     scanPool = object.getInt("scanPool");
                 else if (object.has("scanData"))
-                    scanData.add(object.getString("scanData"));
+                {
+                    if (object.has("nullify"))
+                    {
+                        scanData.remove(object.getInt("scanID"));
+                    }
+                    else
+                    {
+                        ScanItem scan = new ScanItem(object.getString("scanID"),object.getString("scanDesc"),object.getString("scanType"));
+                        scanData.add(scan);
+                    }
+                }
                 else if (object.has("enemyCount"))
                     enemyCount = object.getInt("enemyCount");
-                else if (object.has("enemyDetail"))
-                    enemyDetail.add(object.getString("enemyDetail"));
                 else if (object.has("shipHealth"))
                     shipHealth = object.getInt("shipHealth");
                 else if (object.has("weaponDetail"))

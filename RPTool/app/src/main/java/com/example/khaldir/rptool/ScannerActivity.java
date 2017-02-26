@@ -13,9 +13,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
-public class SensorActivity extends ReactorClass
+import java.util.List;
+
+public class ScannerActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    List<RelativeLayout> scanRow;
+    List<TextView> scanNames;
+    List<TextView> scanDescriptions;
+    List<Button> scanButtons;
+    ProgressBar availablePower;
+    TextView availPower;
 
 
     @Override

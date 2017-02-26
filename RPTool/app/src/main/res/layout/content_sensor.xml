@@ -10,7 +10,271 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.khaldir.rptool.SensorActivity"
+    tools:context="com.example.khaldir.rptool.ScannerActivity"
     tools:showIn="@layout/app_bar_sensor">
+
+    <TextView
+        android:text="Available Power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/availScanPower" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/availScanPower"
+        android:layout_alignParentStart="true"
+        android:id="@+id/scanPowerBar"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="10dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scans"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/scanPowerBar"
+        android:layout_alignParentBottom="true"
+        android:fadeScrollbars="true"
+        android:isScrollContainer="true"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scan2"
+            android:layout_below="@+id/scan1"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc2" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc2"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend2"
+                android:layout_toEndOf="@+id/scanType2"
+                android:layout_alignBottom="@+id/scanSend2" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scan3"
+            android:layout_below="@+id/scan2"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType3"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc3" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc3"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend3"
+                android:layout_toEndOf="@+id/scanType3"
+                android:layout_alignBottom="@+id/scanSend3" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend3"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scan4"
+            android:layout_below="@+id/scan3"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType4"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc4" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc4"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend4"
+                android:layout_toEndOf="@+id/scanType4"
+                android:layout_alignBottom="@+id/scanSend4" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend4"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scan5"
+            android:layout_below="@+id/scan4"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType5"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc5" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc5"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend5"
+                android:layout_toEndOf="@+id/scanType5"
+                android:layout_alignBottom="@+id/scanSend5" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend5"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scan6"
+            android:layout_below="@+id/scan5"
+            android:layout_alignParentStart="true">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType6"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc6" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc6"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend6"
+                android:layout_toEndOf="@+id/scanType6"
+                android:layout_alignBottom="@+id/scanSend6" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend6"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/scanPowerBar"
+            android:layout_alignParentStart="true"
+            android:id="@+id/scan1">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanType1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:layout_alignBottom="@+id/scanDesc1" />
+
+            <TextView
+                android:text="TextView"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanDesc1"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/scanSend1"
+                android:layout_toEndOf="@+id/scanType1"
+                android:layout_alignBottom="@+id/scanSend1" />
+
+            <Button
+                android:text="Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/scanSend1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:onClick="scanSend" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
