@@ -97,6 +97,7 @@ public class PilotActivity extends ReactorClass
         });
 
         wifiObject.currentLocation = 1;
+        sendLocation("pilot");
 
     }
 

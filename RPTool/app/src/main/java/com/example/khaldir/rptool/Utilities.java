@@ -79,13 +79,22 @@ public class Utilities {
     public static String createJSON(String message, String tag)
     {
         JSONObject jsonObject = new JSONObject();
-        JSONObject jsonSubObject = new JSONObject();
         try {
-            jsonSubObject.put(tag,message);
+            jsonObject.put(tag,message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject.toString();
+    }
+
+    public static JSONObject addtoJSON(JSONObject json, String message, String tag)
+    {
+        try {
+            json.put(tag,message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 
 

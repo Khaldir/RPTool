@@ -69,7 +69,7 @@ public class EngineActivity extends ReactorClass
         scannerBar.setMax(maxEngineOutput);
 
         wifiObject.currentLocation = 5;
-
+        sendLocation("engines");
 
 
     }
@@ -109,7 +109,7 @@ public class EngineActivity extends ReactorClass
         }
         else
         {
-            Utilities.newSnackbar(sender,"Overallocated Power!");
+            Utilities.newSnackbar(this,"Overallocated Power!");
         }
         if (maxEngineOutput != wifiObject.EnginePower)
             maxEngineOutput = wifiObject.EnginePower;

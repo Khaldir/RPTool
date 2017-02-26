@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +15,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Switch;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import com.example.khaldir.rptool.WeaponItem;
+
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class WeaponsActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    List<TableRow> weaponRow;
+    List<TextView> weaponNames;
+    List<TextView> weaponDescriptions;
+    List<TextView> weaponPowerUses;
+    List<Switch> weaponSwitches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +62,84 @@ public class WeaponsActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
         wifiObject.currentLocation = 3;
+        sendLocation("weapons");
+
+
+        weaponRow.add((TableRow) findViewById(R.id.weapon1));
+        weaponRow.add((TableRow) findViewById(R.id.weapon2));
+        weaponRow.add((TableRow) findViewById(R.id.weapon3));
+        weaponRow.add((TableRow) findViewById(R.id.weapon4));
+        weaponRow.add((TableRow) findViewById(R.id.weapon5));
+        weaponRow.add((TableRow) findViewById(R.id.weapon6));
+
+        weaponNames.add((TextView) findViewById(R.id.name1));
+        weaponNames.add((TextView) findViewById(R.id.name2));
+        weaponNames.add((TextView) findViewById(R.id.name3));
+        weaponNames.add((TextView) findViewById(R.id.name4));
+        weaponNames.add((TextView) findViewById(R.id.name5));
+        weaponNames.add((TextView) findViewById(R.id.name6));
+
+        weaponDescriptions.add((TextView) findViewById(R.id.desc1));
+        weaponDescriptions.add((TextView) findViewById(R.id.desc2));
+        weaponDescriptions.add((TextView) findViewById(R.id.desc3));
+        weaponDescriptions.add((TextView) findViewById(R.id.desc4));
+        weaponDescriptions.add((TextView) findViewById(R.id.desc5));
+        weaponDescriptions.add((TextView) findViewById(R.id.desc6));
+
+        weaponPowerUses.add((TextView) findViewById(R.id.power1));
+        weaponPowerUses.add((TextView) findViewById(R.id.power2));
+        weaponPowerUses.add((TextView) findViewById(R.id.power3));
+        weaponPowerUses.add((TextView) findViewById(R.id.power4));
+        weaponPowerUses.add((TextView) findViewById(R.id.power5));
+        weaponPowerUses.add((TextView) findViewById(R.id.power6));
+
+        weaponSwitches.add((Switch) findViewById(R.id.is1Active));
+        weaponSwitches.add((Switch) findViewById(R.id.is2Active));
+        weaponSwitches.add((Switch) findViewById(R.id.is3Active));
+        weaponSwitches.add((Switch) findViewById(R.id.is4Active));
+        weaponSwitches.add((Switch) findViewById(R.id.is5Active));
+        weaponSwitches.add((Switch) findViewById(R.id.is6Active));
+    }
+
+    @Override
+    public void reactToChanges()
+    {
+        // For each weapon
+        for (int i = 0; i < 6; i++) {
+            // If the slot isn't empty
+            if (!wifiObject.weaponInfo.get(i).equals(null))
+            {
+                weaponNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
+                weaponDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).name);
+                weaponPowerUses.get(i).setText(wifiObject.weaponInfo.get(i).name);
+                weaponSwitches.get(i).setChecked(wifiObject.weaponInfo.get(i).isActive);
+            }
+            //If the slot is empty
+            else
+            {
+                weaponRow.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    protected void updateWeapons(View sender)
+    {
+
+
+        for (int i = 0; i< 6; i++) {
+
+            if (weaponRow.get(i).getVisibility() == View.VISIBLE)
+            {
+                JSONObject weaponValues = new JSONObject();
+                Utilities.addtoJSON(weaponValues,String.valueOf(i),"weaponID");
+                Utilities.addtoJSON(weaponValues,weaponNames.get(i).getText().toString(),"weaponName");
+                Utilities.addtoJSON(weaponValues,weaponDescriptions.get(i).getText().toString(),"weaponDesc");
+                Utilities.addtoJSON(weaponValues,weaponPowerUses.get(i).getText().toString(),"weaponPower");
+                Utilities.addtoJSON(weaponValues,String.valueOf(weaponSwitches.get(i).isChecked()),"weaponOn");
+                wifiObject.sendValue(weaponValues.toString(),wifiObject.gmIP);
+            }
+
+        }
     }
 
     @Override

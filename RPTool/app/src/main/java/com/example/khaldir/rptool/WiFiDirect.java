@@ -119,8 +119,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     boolean isPilotEditable;
 
     //Weapons
-    Set<String> weaponInfo;
-    Set<String> activeWeapons;
+    List<WeaponItem> weaponInfo;
     boolean isWeaponsEditable;
 
     //Scanners
@@ -280,9 +279,17 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("shipHealth"))
                     shipHealth = object.getInt("shipHealth");
                 else if (object.has("weaponDetail"))
-                    weaponInfo.add(object.getString("weaponDetail"));
-                else if (object.has("activeWeapon"))
-                    activeWeapons.add(object.getString("activeWeapon"));
+                {
+                    if (object.has("nullify"))
+                    {
+                        weaponInfo.remove(object.getInt("weaponID"));
+                    }
+                    else
+                    {
+                        WeaponItem weapon = new WeaponItem(object.getString("weaponID"),object.getString("weaponName"),object.getString("weaponDesc"),object.getString("weaponPower"),object.getBoolean("weaponOn"));
+                        weaponInfo.add(weapon);
+                    }
+                }
                 else if (object.has("pilot"))
                     pilotIP = InetAddress.getByName(object.getString("pilot"));
                 else if (object.has("shields"))
@@ -414,6 +421,11 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     public void sendValue(String tag, String value, InetAddress recipient)
     {
         String message = Utilities.createJSON(value,tag);
+        new Thread(new ClientThread(recipient, 8888, message)).start();
+    }
+
+    public void sendValue(String message, InetAddress recipient)
+    {
         new Thread(new ClientThread(recipient, 8888, message)).start();
     }
 
