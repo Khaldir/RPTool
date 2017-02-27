@@ -2,6 +2,7 @@ package com.example.khaldir.rptool;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -20,7 +21,11 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class WeaponsActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -65,7 +70,7 @@ public class WeaponsActivity extends ReactorClass
 
         availablePower = (ProgressBar) findViewById(R.id.weaponPowerBar);
 
-
+        weaponRow = new ArrayList<RelativeLayout>();
         weaponRow.add((RelativeLayout) findViewById(R.id.weapon1));
         weaponRow.add((RelativeLayout) findViewById(R.id.weapon2));
         weaponRow.add((RelativeLayout) findViewById(R.id.weapon3));
@@ -73,6 +78,7 @@ public class WeaponsActivity extends ReactorClass
         weaponRow.add((RelativeLayout) findViewById(R.id.weapon5));
         weaponRow.add((RelativeLayout) findViewById(R.id.weapon6));
 
+        weaponNames = new ArrayList<TextView>();
         weaponNames.add((TextView) findViewById(R.id.name1));
         weaponNames.add((TextView) findViewById(R.id.name2));
         weaponNames.add((TextView) findViewById(R.id.name3));
@@ -80,6 +86,7 @@ public class WeaponsActivity extends ReactorClass
         weaponNames.add((TextView) findViewById(R.id.name5));
         weaponNames.add((TextView) findViewById(R.id.name6));
 
+        weaponDescriptions = new ArrayList<TextView>();
         weaponDescriptions.add((TextView) findViewById(R.id.desc1));
         weaponDescriptions.add((TextView) findViewById(R.id.desc2));
         weaponDescriptions.add((TextView) findViewById(R.id.desc3));
@@ -87,6 +94,7 @@ public class WeaponsActivity extends ReactorClass
         weaponDescriptions.add((TextView) findViewById(R.id.desc5));
         weaponDescriptions.add((TextView) findViewById(R.id.desc6));
 
+        weaponPowerUses = new ArrayList<TextView>();
         weaponPowerUses.add((TextView) findViewById(R.id.power1));
         weaponPowerUses.add((TextView) findViewById(R.id.power2));
         weaponPowerUses.add((TextView) findViewById(R.id.power3));
@@ -94,6 +102,7 @@ public class WeaponsActivity extends ReactorClass
         weaponPowerUses.add((TextView) findViewById(R.id.power5));
         weaponPowerUses.add((TextView) findViewById(R.id.power6));
 
+        weaponSwitches = new ArrayList<Switch>();
         weaponSwitches.add((Switch) findViewById(R.id.is1Active));
         weaponSwitches.add((Switch) findViewById(R.id.is2Active));
         weaponSwitches.add((Switch) findViewById(R.id.is3Active));
@@ -112,22 +121,27 @@ public class WeaponsActivity extends ReactorClass
         availablePower.setMax(wifiObject.EnginePower);
         availablePower.setProgress(wifiObject.WeaponEnergyIn);
         // For each weapon
+
         for (int i = 0; i < 6; i++) {
-            // If the slot isn't empty
-            if (!wifiObject.weaponInfo.get(i).equals(null))
-            {
-                weaponRow.get(i).setVisibility(View.VISIBLE);
-                weaponNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
-                weaponDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).description);
-                weaponPowerUses.get(i).setText(wifiObject.weaponInfo.get(i).powerUse);
-                weaponSwitches.get(i).setChecked(wifiObject.weaponInfo.get(i).isActive);
-            }
-            //If the slot is empty
-            else
-            {
-                weaponRow.get(i).setVisibility(View.INVISIBLE);
-            }
+            // Mark all as empty
+            weaponRow.get(i).setVisibility(View.INVISIBLE);
+
+            // If the slot isn't empty:
+            if (wifiObject.weaponInfo.size() > 0)
+                if (!wifiObject.weaponInfo.get(i).equals(null))
+                {
+                    weaponRow.get(i).setVisibility(View.VISIBLE);
+                    weaponNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
+                    weaponDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).description);
+                    weaponPowerUses.get(i).setText(wifiObject.weaponInfo.get(i).powerUse);
+                    weaponSwitches.get(i).setChecked(wifiObject.weaponInfo.get(i).isActive);
+                }
+
+
+
+
         }
+
     }
 
     protected void updateWeapons(View sender)
@@ -188,6 +202,12 @@ public class WeaponsActivity extends ReactorClass
         return super.onOptionsItemSelected(item);
     }
 
+    private void clearWeapons()
+    {
+        wifiObject.weaponIP = null;
+        clearLocation("weapons");
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -197,39 +217,48 @@ public class WeaponsActivity extends ReactorClass
         if (id == R.id.nav_pilot) {
             if (wifiObject.pilotIP == null)
             {
-                wifiObject.engineIP = null;
+                clearWeapons();
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
                 this.startActivity(pilotIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_shields) {
             if (wifiObject.shieldIP == null)
             {
-                wifiObject.engineIP = null;
+                clearWeapons();
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
                 this.startActivity(shieldIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_engines) {
             if (wifiObject.engineIP == null)
             {
-                wifiObject.weaponIP = null;
+                clearWeapons();
                 Intent engineIntent = new Intent(this,EngineActivity.class);
                 this.startActivity(engineIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_sensors) {
             if (wifiObject.scannerIP == null)
             {
-                wifiObject.engineIP = null;
+                clearWeapons();
                 Intent sensorIntent = new Intent(this,ScannerActivity.class);
                 this.startActivity(sensorIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            clearWeapons();
+            Intent connectIntent = new Intent(this,PlayerActivity.class);
+            this.startActivity(connectIntent);
+            finish();
         } else if (id == R.id.nav_weapons) {
             Utilities.newToast(this,"You are already at the Weapons!");
         }

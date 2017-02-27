@@ -145,6 +145,12 @@ public class EngineActivity extends ReactorClass
         return super.onOptionsItemSelected(item);
     }
 
+    private void clearEngines()
+    {
+        wifiObject.engineIP = null;
+        clearLocation("engines");
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -154,7 +160,7 @@ public class EngineActivity extends ReactorClass
         if (id == R.id.nav_pilot) {
             if (wifiObject.pilotIP == null)
             {
-                wifiObject.engineIP = null;
+                clearEngines();
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
                 this.startActivity(pilotIntent);
                 finish();
@@ -164,7 +170,7 @@ public class EngineActivity extends ReactorClass
         } else if (id == R.id.nav_shields) {
             if (wifiObject.shieldIP == null)
             {
-                wifiObject.engineIP = null;
+                clearEngines();
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
                 this.startActivity(shieldIntent);
                 finish();
@@ -174,7 +180,7 @@ public class EngineActivity extends ReactorClass
         } else if (id == R.id.nav_weapons) {
             if (wifiObject.weaponIP == null)
             {
-                wifiObject.engineIP = null;
+                clearEngines();
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
                 this.startActivity(weaponIntent);
                 finish();
@@ -184,13 +190,18 @@ public class EngineActivity extends ReactorClass
         } else if (id == R.id.nav_sensors) {
             if (wifiObject.scannerIP == null)
             {
-                wifiObject.engineIP = null;
+                clearEngines();
                 Intent sensorIntent = new Intent(this,ScannerActivity.class);
                 this.startActivity(sensorIntent);
                 finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            clearEngines();
+            Intent connectIntent = new Intent(this,PlayerActivity.class);
+            this.startActivity(connectIntent);
+            finish();
         } else if (id == R.id.nav_engines) {
         Utilities.newToast(this,"You are already at the Engines!");
         }

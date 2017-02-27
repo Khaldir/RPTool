@@ -126,13 +126,14 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     int scanPool;
     List<ScanItem> scanData;
     int enemyCount;
-    List<ScanItem> enemyDetail;
     int shipHealth;
     boolean isScannerEditable;
 
     private WiFiDirect(final ReactorClass context) {
         this.context = context;
 
+        weaponInfo = new ArrayList<WeaponItem>();
+        scanData = new ArrayList<ScanItem>();
         peers = new ArrayList<WifiP2pDevice>();
         peerStrings = new ArrayList<String>();
 
@@ -169,7 +170,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         this.serverThread.start();
 
         EnginePower = 10;
-        speedMultiplier = 2;
+        speedMultiplier = 10;
 
         isGroupOwner = false;
         isPilotEditable = isShieldsEditable = isWeaponsEditable = isScannerEditable = isEnginesEditable = true;
@@ -405,6 +406,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     @Override
     public void onConnectionInfoAvailable(final WifiP2pInfo p2pInfo) {
         // InetAddress from WifiP2pInfo struct.
+        gmIP = p2pInfo.groupOwnerAddress;
         if (addressConnectionsList.contains(p2pInfo.groupOwnerAddress)) {
             Utilities.newToast(context,"Already connected to peer.");
             return;
@@ -413,6 +415,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
             Utilities.newToast(context,"Group formed, Im the GO!");
             isGroupOwner = true;
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
+
 
 
         } else if (p2pInfo.groupFormed) {

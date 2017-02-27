@@ -79,8 +79,9 @@ public class PilotActivity extends ReactorClass
                 //Determine Dodge [speedVal + dodgeVal = getMax()]
                 dodgeVal = distBar.getMax()-speedVal;
                 //Show Values;
-                speed.setText(speedVal*wifiObject.speedMultiplier);
-                dodge.setText(dodgeVal);
+                int modifiedSpeed = speedVal*wifiObject.speedMultiplier;
+                speed.setText(String.valueOf(modifiedSpeed));
+                dodge.setText(String.valueOf(dodgeVal));
             }
 
             @Override
@@ -113,6 +114,8 @@ public class PilotActivity extends ReactorClass
         speedVal = wifiObject.speed;
         dodgeVal = wifiObject.dodge;
         distBar.setEnabled(wifiObject.isPilotEditable);
+        availablePowerBar.setMax(maxEngineOutput);
+        availablePowerBar.setProgress(availablePower);
     }
 
     @Override
@@ -153,6 +156,12 @@ public class PilotActivity extends ReactorClass
         return super.onOptionsItemSelected(item);
     }
 
+    private void clearPilot()
+    {
+        wifiObject.pilotIP = null;
+        clearLocation("pilot");
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -162,7 +171,7 @@ public class PilotActivity extends ReactorClass
         if (id == R.id.nav_engines) {
             if (wifiObject.engineIP == null)
             {
-                wifiObject.engineIP = null;
+                clearPilot();
                 Intent engineIntent = new Intent(this,EngineActivity.class);
                 this.startActivity(engineIntent);
             }
@@ -171,7 +180,7 @@ public class PilotActivity extends ReactorClass
         } else if (id == R.id.nav_shields) {
             if (wifiObject.shieldIP == null)
             {
-                wifiObject.engineIP = null;
+                clearPilot();
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
                 this.startActivity(shieldIntent);
             }
@@ -180,7 +189,7 @@ public class PilotActivity extends ReactorClass
         } else if (id == R.id.nav_weapons) {
             if (wifiObject.weaponIP == null)
             {
-                wifiObject.engineIP = null;
+                clearPilot();
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
                 this.startActivity(weaponIntent);
             }
@@ -189,12 +198,17 @@ public class PilotActivity extends ReactorClass
         } else if (id == R.id.nav_sensors) {
             if (wifiObject.scannerIP == null)
             {
-                wifiObject.engineIP = null;
+                clearPilot();
                 Intent sensorIntent = new Intent(this,ScannerActivity.class);
                 this.startActivity(sensorIntent);
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            clearPilot();
+            Intent connectIntent = new Intent(this,PlayerActivity.class);
+            this.startActivity(connectIntent);
+            finish();
         } else if (id == R.id.nav_pilot) {
             Utilities.newToast(this,"You are already at the Helm!");
         }

@@ -10,6 +10,7 @@ public class ReactorClass extends AppCompatActivity {
 
     WiFiDirect wifiObject;
 
+
     public void reactToChanges()
     {
 
@@ -18,5 +19,10 @@ public class ReactorClass extends AppCompatActivity {
     public void sendLocation(String location)
     {
         wifiObject.sendValue(location,Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),wifiObject.gmIP);
+    }
+
+    public void clearLocation(String location)
+    {
+        wifiObject.sendValue(location,"",wifiObject.gmIP);
     }
 }

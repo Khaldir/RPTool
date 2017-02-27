@@ -185,6 +185,12 @@ public class ShieldsActivity extends ReactorClass
         return super.onOptionsItemSelected(item);
     }
 
+    private void clearShields()
+    {
+        wifiObject.shieldIP = null;
+        clearLocation("shields");
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -194,39 +200,48 @@ public class ShieldsActivity extends ReactorClass
         if (id == R.id.nav_pilot) {
             if (wifiObject.pilotIP == null)
             {
-                wifiObject.engineIP = null;
+                clearShields();
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
                 this.startActivity(pilotIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_engines) {
             if (wifiObject.engineIP == null)
             {
-                wifiObject.shieldIP = null;
+                clearShields();
                 Intent engineIntent = new Intent(this,EngineActivity.class);
                 this.startActivity(engineIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_weapons) {
             if (wifiObject.weaponIP == null)
             {
-                wifiObject.engineIP = null;
+                clearShields();
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
                 this.startActivity(weaponIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_sensors) {
             if (wifiObject.scannerIP == null)
             {
-                wifiObject.engineIP = null;
+                clearShields();
                 Intent sensorIntent = new Intent(this,ScannerActivity.class);
                 this.startActivity(sensorIntent);
+                finish();
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            clearShields();
+            Intent connectIntent = new Intent(this,PlayerActivity.class);
+            this.startActivity(connectIntent);
+            finish();
         } else if (id == R.id.nav_shields) {
             Utilities.newToast(this,"You are already at the Shields!");
         }

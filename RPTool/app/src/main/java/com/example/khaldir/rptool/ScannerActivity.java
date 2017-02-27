@@ -59,7 +59,7 @@ public class ScannerActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
         wifiObject.currentLocation = 4;
-        sendLocation("scanner");
+        sendLocation("scanners");
     }
 
     @Override
@@ -100,6 +100,12 @@ public class ScannerActivity extends ReactorClass
         return super.onOptionsItemSelected(item);
     }
 
+    private void clearScanner()
+    {
+        wifiObject.scannerIP = null;
+        clearLocation("scanners");
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -109,7 +115,7 @@ public class ScannerActivity extends ReactorClass
         if (id == R.id.nav_pilot) {
             if (wifiObject.pilotIP == null)
             {
-                wifiObject.engineIP = null;
+                clearScanner();
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
                 this.startActivity(pilotIntent);
             }
@@ -118,7 +124,7 @@ public class ScannerActivity extends ReactorClass
         } else if (id == R.id.nav_shields) {
             if (wifiObject.shieldIP == null)
             {
-                wifiObject.engineIP = null;
+                clearScanner();
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
                 this.startActivity(shieldIntent);
             }
@@ -127,21 +133,26 @@ public class ScannerActivity extends ReactorClass
         } else if (id == R.id.nav_weapons) {
             if (wifiObject.weaponIP == null)
             {
-                wifiObject.engineIP = null;
+                clearScanner();
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
                 this.startActivity(weaponIntent);
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
-        } else if (id == R.id.nav_sensors) {
+        } else if (id == R.id.nav_engines) {
             if (wifiObject.engineIP == null)
             {
-                wifiObject.scannerIP = null;
+                clearScanner();
                 Intent engineIntent = new Intent(this,EngineActivity.class);
                 this.startActivity(engineIntent);
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            clearScanner();
+            Intent connectIntent = new Intent(this,PlayerActivity.class);
+            this.startActivity(connectIntent);
+            finish();
         } else if (id == R.id.nav_sensors) {
             Utilities.newToast(this,"You are already at the Sensors!");
         }

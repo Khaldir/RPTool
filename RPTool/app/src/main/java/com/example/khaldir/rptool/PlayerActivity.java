@@ -54,22 +54,38 @@ public class PlayerActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
 
+        gm = (TextView) findViewById(R.id.gmText);
+        pilot = (TextView) findViewById(R.id.pilotText);
+        shields = (TextView) findViewById(R.id.shieldsText);
+        weapons = (TextView) findViewById(R.id.weaponsText);
+        scanners = (TextView) findViewById(R.id.scannersText);
+        engines = (TextView) findViewById(R.id.enginesText);
+        others = (TextView) findViewById(R.id.othersText);
+
+        reactToChanges();
+
     }
 
     @Override
     public void reactToChanges() {
-        gm.setText(wifiObject.gmIP.getHostName());
-        pilot.setText(wifiObject.pilotIP.getHostName());
-        shields.setText(wifiObject.shieldIP.getHostName());
-        weapons.setText(wifiObject.weaponIP.getHostName());
-        scanners.setText(wifiObject.scannerIP.getHostName());
-        engines.setText(wifiObject.engineIP.getHostName());
-        String othersText = System.lineSeparator();
+        if (wifiObject.gmIP != null)
+            gm.setText("GM: "  +wifiObject.gmIP.getHostAddress());
+        if (wifiObject.pilotIP != null)
+            pilot.setText("Pilot: " + wifiObject.pilotIP.getHostAddress());
+        if (wifiObject.shieldIP != null)
+            shields.setText("Shields: " + wifiObject.shieldIP.getHostAddress());
+        if (wifiObject.weaponIP != null)
+            weapons.setText("Weapons: " + wifiObject.weaponIP.getHostAddress());
+        if (wifiObject.scannerIP != null)
+            scanners.setText("Scanners: " + wifiObject.scannerIP.getHostAddress());
+        if (wifiObject.engineIP != null)
+            engines.setText("Engines: " + wifiObject.engineIP.getHostAddress());
+        String othersText = "Not at a Station:" + System.lineSeparator();
         for (InetAddress address : wifiObject.addressConnectionsList)
         {
-            if (!address.equals(wifiObject.gmIP) && !address.equals(wifiObject.pilotIP) && !address.equals(wifiObject.shieldIP) && !address.equals(wifiObject.weaponIP) && !address.equals(wifiObject.scannerIP) && !address.equals(wifiObject.engineIP))
+            if (address != null && !address.equals(wifiObject.gmIP) && !address.equals(wifiObject.pilotIP) && !address.equals(wifiObject.shieldIP) && !address.equals(wifiObject.weaponIP) && !address.equals(wifiObject.scannerIP) && !address.equals(wifiObject.engineIP))
             {
-                othersText = othersText + address.getHostName();
+                othersText = othersText + address.getHostAddress();
             }
         }
         others.setText(othersText);

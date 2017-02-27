@@ -174,8 +174,8 @@ public class MainActivity extends ReactorClass {
         if(isConnected)
             if(wifiObject.isGroupOwner)
             {
-                //Intent intent = new Intent(context,GMActivity.class);
-                //context.startActivity(intent);
+                Intent intent = new Intent(context,PlayerActivity.class);
+                context.startActivity(intent);
             }
             else
             {
