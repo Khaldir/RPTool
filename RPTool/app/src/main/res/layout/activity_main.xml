@@ -39,4 +39,5 @@
         android:layout_alignParentEnd="true"
         android:visibility="invisible"
         android:onClick="connectToDevice" />
+
 </RelativeLayout>

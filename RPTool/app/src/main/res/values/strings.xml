@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">RPTool</string>
+    <string name="title_activity_player">PlayerActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_engine">EngineActivity</string>
+    <string name="title_activity_shields">Shields</string>
+    <string name="title_activity_weapons">WeaponsActivity</string>
+    <string name="title_activity_pilot">PilotActivity</string>
+    <string name="title_activity_sensor">SensorActivity</string>
 </resources>
