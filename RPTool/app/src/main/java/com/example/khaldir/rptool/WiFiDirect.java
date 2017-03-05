@@ -311,7 +311,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     engineIP = InetAddress.getByName(object.getString("engines"));
                 else
                 {
-                    Utilities.newToast(context, jsonFile);
+                    Utilities.newSnackbar(context, jsonFile);
                 }
                 context.reactToChanges();
             } catch (JSONException e) {
