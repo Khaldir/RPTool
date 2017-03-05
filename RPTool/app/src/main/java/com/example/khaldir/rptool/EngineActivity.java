@@ -156,54 +156,34 @@ public class EngineActivity extends ReactorClass
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        boolean alreadyThere = false;
 
-        if (id == R.id.nav_pilot) {
-            if (wifiObject.pilotIP == null)
-            {
-                clearEngines();
-                Intent pilotIntent = new Intent(this,PilotActivity.class);
-                this.startActivity(pilotIntent);
-                finish();
-            }
-            else
-                Utilities.newToast(this,"There is already someone at this Station!");
+        Intent gmIntent = new Intent();
+
+        if (id == R.id.nav_gm) {
+            gmIntent = new Intent(this,GMActivity.class);
+        } else if (id == R.id.nav_pilot) {
+            gmIntent = new Intent(this,PilotActivity.class);
         } else if (id == R.id.nav_shields) {
-            if (wifiObject.shieldIP == null)
-            {
-                clearEngines();
-                Intent shieldIntent = new Intent(this,ShieldsActivity.class);
-                this.startActivity(shieldIntent);
-                finish();
-            }
-            else
-                Utilities.newToast(this,"There is already someone at this Station!");
+            gmIntent = new Intent(this,ShieldsActivity.class);
         } else if (id == R.id.nav_weapons) {
-            if (wifiObject.weaponIP == null)
-            {
-                clearEngines();
-                Intent weaponIntent = new Intent(this,WeaponsActivity.class);
-                this.startActivity(weaponIntent);
-                finish();
-            }
-            else
-                Utilities.newToast(this,"There is already someone at this Station!");
+            gmIntent = new Intent(this,WeaponsActivity.class);
         } else if (id == R.id.nav_sensors) {
-            if (wifiObject.scannerIP == null)
-            {
-                clearEngines();
-                Intent sensorIntent = new Intent(this,ScannerActivity.class);
-                this.startActivity(sensorIntent);
-                finish();
-            }
-            else
-                Utilities.newToast(this,"There is already someone at this Station!");
-        } else if (id == R.id.nav_connect) {
-            clearEngines();
-            Intent connectIntent = new Intent(this,PlayerActivity.class);
-            this.startActivity(connectIntent);
-            finish();
+            gmIntent = new Intent(this,ScannerActivity.class);
         } else if (id == R.id.nav_engines) {
-        Utilities.newToast(this,"You are already at the Engines!");
+            alreadyThere = true;
+        } else if (id == R.id.nav_connect) {
+            gmIntent = new Intent(this,PlayerActivity.class);
+        }
+
+        if (!alreadyThere)
+        {
+            this.startActivity(gmIntent);
+            finish();
+        }
+        else
+        {
+            Utilities.newToast(this,"You are already at this Location!");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
