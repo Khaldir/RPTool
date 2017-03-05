@@ -29,6 +29,4 @@
         android:icon="@drawable/ic_menu_share"
         android:title="Connection" />
 
-
-
 </menu>

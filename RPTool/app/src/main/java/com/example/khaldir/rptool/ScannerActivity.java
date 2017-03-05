@@ -19,9 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class ScannerActivity extends ReactorClass
@@ -63,120 +60,6 @@ public class ScannerActivity extends ReactorClass
         wifiObject = WiFiDirect.getInstance(this);
         wifiObject.currentLocation = 4;
         sendLocation("scanners");
-
-        initialise();
-    }
-
-    private void initialise()
-    {
-        availablePower = (ProgressBar) findViewById(R.id.scanPowerBar);
-        availPower = (TextView) findViewById(R.id.availScanPower);
-
-        scanRow = new ArrayList<RelativeLayout>();
-        scanRow.add((RelativeLayout) findViewById(R.id.scan1));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan2));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan3));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan4));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan5));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan6));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan7));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan8));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan9));
-        scanRow.add((RelativeLayout) findViewById(R.id.scan10));
-
-        scanNames = new ArrayList<TextView>();
-        scanNames.add((TextView) findViewById(R.id.scanType1));
-        scanNames.add((TextView) findViewById(R.id.scanType2));
-        scanNames.add((TextView) findViewById(R.id.scanType3));
-        scanNames.add((TextView) findViewById(R.id.scanType4));
-        scanNames.add((TextView) findViewById(R.id.scanType5));
-        scanNames.add((TextView) findViewById(R.id.scanType6));
-        scanNames.add((TextView) findViewById(R.id.scanType7));
-        scanNames.add((TextView) findViewById(R.id.scanType8));
-        scanNames.add((TextView) findViewById(R.id.scanType9));
-        scanNames.add((TextView) findViewById(R.id.scanType10));
-
-        scanDescriptions = new ArrayList<TextView>();
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc1));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc2));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc3));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc4));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc5));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc6));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc7));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc8));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc9));
-        scanDescriptions.add((TextView) findViewById(R.id.scanDesc10));
-
-        scanButtons = new ArrayList<Button>();
-        scanButtons.add((Button) findViewById(R.id.scanSend1));
-        scanButtons.add((Button) findViewById(R.id.scanSend2));
-        scanButtons.add((Button) findViewById(R.id.scanSend3));
-        scanButtons.add((Button) findViewById(R.id.scanSend4));
-        scanButtons.add((Button) findViewById(R.id.scanSend5));
-        scanButtons.add((Button) findViewById(R.id.scanSend6));
-        scanButtons.add((Button) findViewById(R.id.scanSend7));
-        scanButtons.add((Button) findViewById(R.id.scanSend8));
-        scanButtons.add((Button) findViewById(R.id.scanSend9));
-        scanButtons.add((Button) findViewById(R.id.scanSend10));
-
-        reactToChanges();
-    }
-
-    @Override
-    public void reactToChanges() {
-        availPower.setText("Available Power: "+String.valueOf(wifiObject.SensorEnergyIn));
-        availablePower.setMax(wifiObject.EnginePower);
-        availablePower.setProgress(wifiObject.SensorEnergyIn);
-
-        // For each scan
-        for (int i = 0; i < 10; i++) {
-            // Mark all as empty
-            scanRow.get(i).setVisibility(View.INVISIBLE);
-
-            // If the slot isn't empty:
-            if (wifiObject.scanData.size() > 0)
-                if (!wifiObject.scanData.get(i).equals(null))
-                {
-                    scanRow.get(i).setVisibility(View.VISIBLE);
-                    scanNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
-                    scanDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).description);
-                }
-
-
-
-
-        }
-    }
-
-    protected void scanSend(View sender)
-    {
-        sendValues((int)sender.getTag());
-    }
-
-    private void sendValues(int id)
-    {
-        //Get Destination
-        JSONObject jsonChild;
-        JSONObject jsonParent;
-        switch((String)scanNames.get(id).getText())
-        {
-            //If the scanned item is an Enemy:
-            case "Enemy":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"weapons");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-                break;
-            case "Number of Enemies":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"weapons");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-                break;
-            case "Ship Health":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"shields");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-        }
     }
 
     @Override
