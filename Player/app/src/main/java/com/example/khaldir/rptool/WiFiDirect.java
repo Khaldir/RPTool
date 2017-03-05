@@ -540,7 +540,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
         @Override
         public void run() {
-            if (isGroupOwner)
+            //If GM:
+            if (currentLocation == 0)
             {
                 Utilities.newToast(context,"Sending to all");
                 sendValue(msg);
