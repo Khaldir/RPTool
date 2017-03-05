@@ -178,6 +178,8 @@ public class PlayerActivity extends ReactorClass
             }
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
+        } else if (id == R.id.nav_connect) {
+            Utilities.newToast(this,"You are already here!");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

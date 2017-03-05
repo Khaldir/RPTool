@@ -100,7 +100,8 @@ public class MainActivity extends ReactorClass {
                 deviceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        connectButton.setText("Connect to " + wifiObject.peers.get(position).deviceName);
+                        if (!isConnected)
+                            connectButton.setText("Connect to " + wifiObject.peers.get(position).deviceName);
                         wifiObject.connectDevice = wifiObject.peers.get(position);
                     }
 
@@ -187,10 +188,7 @@ public class MainActivity extends ReactorClass {
         {
             isConnected = wifiObject.connectToDevice();
             if (isConnected)
-                if(wifiObject.isGroupOwner)
-                    connectButton.setText("Go to GM Screen");
-                else
-                    connectButton.setText("Go to Player Screen");
+                connectButton.setText("Go to Player Screen");
         }
 
 
