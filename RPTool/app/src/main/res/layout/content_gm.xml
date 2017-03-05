@@ -13,4 +13,212 @@
     tools:context="com.example.khaldir.rptool.GMActivity"
     tools:showIn="@layout/app_bar_gm">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:text="Pilot Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/pilotTitle"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline" />
+
+        <TextView
+            android:text="Ship Speed:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shipSpeed"
+            android:layout_below="@+id/pilotTitle"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+
+        <TextView
+            android:text="Dodge Pool:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dodgePool"
+            android:layout_below="@+id/shipSpeed"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+
+        <TextView
+            android:text="Modify Dodge Pool:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:layout_below="@+id/dodgePool"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:ems="10"
+            android:id="@+id/dodgeMod"
+            android:layout_below="@+id/textView9"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/button" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/dodgeMod"
+            android:textSize="12sp"
+            android:layout_alignTop="@+id/dodgeMod"
+            android:onClick="modifyDodge" />
+
+        <TextView
+            android:text="Modify Speed Modifier:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/dodgeMod"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText2"
+            android:layout_below="@+id/textView10"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/button2" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"
+            android:textSize="12sp"
+            android:onClick="modifyDodge"
+            android:layout_alignTop="@+id/editText2"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/editText2" />
+
+        <TextView
+            android:text="Shields Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shieldTitle"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:layout_below="@+id/editText2"
+            android:layout_alignParentStart="true"
+            android:paddingTop="20dp" />
+
+        <TextView
+            android:text="Front Shields:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/frontShieldDisplay"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_below="@+id/shieldTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Left Shields:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/leftShieldDisplay"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_below="@+id/frontShieldDisplay"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Right Shields:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rightShieldDisplay"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_below="@+id/leftShieldDisplay"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Rear Shields:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rearShieldDisplay"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:layout_below="@+id/rightShieldDisplay"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Modify Shields:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView19"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/rearShieldDisplay"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:ems="10"
+            android:id="@+id/editText3"
+            android:layout_below="@+id/textView19"
+            android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/textView9" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shieldFacing"
+            android:layout_alignTop="@+id/editText3"
+            android:layout_alignBottom="@+id/editText3"
+            android:layout_toEndOf="@+id/editText3"
+            android:layout_toStartOf="@id/button3" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3"
+            android:layout_alignTop="@+id/shieldFacing"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp"
+            android:layout_alignBottom="@+id/editText3"
+            android:onClick="modifyShields" />
+
+        <TextView
+            android:text="Weapons Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView20"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:paddingTop="20dp"
+            android:layout_below="@+id/editText3"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Active Weapons:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activeWeapons"
+            android:layout_below="@+id/textView20"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+
+    </RelativeLayout>
+
+    </ScrollView>
+
 </RelativeLayout>
+
+

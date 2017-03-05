@@ -13,4 +13,11 @@
     <string name="title_activity_pilot">PilotActivity</string>
     <string name="title_activity_sensor">SensorActivity</string>
     <string name="title_activity_gm">GMActivity</string>
+    <string-array name="shieldFacings">
+        <item>Front</item>
+        <item>Left</item>
+        <item>Right</item>
+        <item>Rear</item>
+    </string-array>
+
 </resources>
