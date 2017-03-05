@@ -80,6 +80,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.khaldir.rptool.MainActivity" />
         </activity>
+        <activity
+            android:name=".GMActivity"
+            android:label="@string/title_activity_gm"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.khaldir.rptool.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

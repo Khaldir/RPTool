@@ -80,7 +80,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     //Threads
     Thread serverThread;
 
-    boolean isGroupOwner;
+    boolean isGM;
 
     //Fields
     //All
@@ -132,6 +132,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     private WiFiDirect(final ReactorClass context) {
         this.context = context;
 
+        isGM = false;
+
         weaponInfo = new ArrayList<WeaponItem>();
         scanData = new ArrayList<ScanItem>();
         peers = new ArrayList<WifiP2pDevice>();
@@ -172,7 +174,6 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         EnginePower = 10;
         speedMultiplier = 10;
 
-        isGroupOwner = false;
         isPilotEditable = isShieldsEditable = isWeaponsEditable = isScannerEditable = isEnginesEditable = true;
         currentLocation = -1;
     }
@@ -413,13 +414,11 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
         if (p2pInfo.isGroupOwner && p2pInfo.groupFormed) {
             Utilities.newToast(context,"Group formed, Im the GO!");
-            isGroupOwner = true;
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
 
 
 
         } else if (p2pInfo.groupFormed) {
-            isGroupOwner = false;
             gmIP = p2pInfo.groupOwnerAddress;
             sendValue("clientIP",Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),gmIP);
             new Thread(new ClientThread(p2pInfo.groupOwnerAddress, 8888, Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()))).start();
@@ -540,7 +539,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
         @Override
         public void run() {
-            if (isGroupOwner)
+            if (isGM)
             {
                 Utilities.newToast(context,"Sending to all");
                 sendValue(msg);

@@ -172,9 +172,9 @@ public class MainActivity extends ReactorClass {
 
     protected void connectToDevice(View view) {
         if(isConnected)
-            if(wifiObject.isGroupOwner)
+            if(wifiObject.isGM)
             {
-                Intent intent = new Intent(context,PlayerActivity.class);
+                Intent intent = new Intent(context,GMActivity.class);
                 context.startActivity(intent);
             }
             else
@@ -187,7 +187,7 @@ public class MainActivity extends ReactorClass {
         {
             isConnected = wifiObject.connectToDevice();
             if (isConnected)
-                if(wifiObject.isGroupOwner)
+                if(wifiObject.isGM)
                     connectButton.setText("Go to GM Screen");
                 else
                     connectButton.setText("Go to Player Screen");

@@ -12,4 +12,5 @@
     <string name="title_activity_weapons">WeaponsActivity</string>
     <string name="title_activity_pilot">PilotActivity</string>
     <string name="title_activity_sensor">SensorActivity</string>
+    <string name="title_activity_gm">GMActivity</string>
 </resources>
