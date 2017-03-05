@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_weapons"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.khaldir.rptool.WeaponsActivity"
+    tools:showIn="@layout/app_bar_weapons">
+
+    <Button
+        android:text="Update Weapon Use"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="19dp"
+        android:id="@+id/updateWeaponUse"
+        android:onClick="updateWeapons" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon2"
+        android:layout_below="@+id/weapon1"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is2Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name2"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is2Active"
+            android:layout_toEndOf="@+id/is2Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power2"
+            android:layout_alignBottom="@+id/name2"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc2"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is2Active"
+            android:layout_toStartOf="@+id/power2"
+            android:layout_toEndOf="@+id/name2"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon3"
+        android:layout_below="@+id/weapon2"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is3Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name3"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is3Active"
+            android:layout_toEndOf="@+id/is3Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power3"
+            android:layout_alignBottom="@+id/name3"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc3"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is3Active"
+            android:layout_toStartOf="@+id/power3"
+            android:layout_toEndOf="@+id/name3"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon4"
+        android:layout_below="@+id/weapon3"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is4Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name4"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is4Active"
+            android:layout_toEndOf="@+id/is4Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power4"
+            android:layout_alignBottom="@+id/name4"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc4"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is4Active"
+            android:layout_toStartOf="@+id/power4"
+            android:layout_toEndOf="@+id/name4"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon5"
+        android:layout_below="@+id/weapon4"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is5Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name5"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is5Active"
+            android:layout_toEndOf="@+id/is5Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power5"
+            android:layout_alignBottom="@+id/name5"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc5"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is5Active"
+            android:layout_toStartOf="@+id/power5"
+            android:layout_toEndOf="@+id/name5"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon6"
+        android:layout_below="@+id/weapon5"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is6Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name6"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is6Active"
+            android:layout_toEndOf="@+id/is6Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power6"
+            android:layout_alignBottom="@+id/name6"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc6"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is6Active"
+            android:layout_toStartOf="@+id/power6"
+            android:layout_toEndOf="@+id/name6"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:text="Available Power"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/availWeaponPower" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weaponPowerBar"
+        android:layout_below="@+id/availWeaponPower"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="10dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/weapon1"
+        android:layout_below="@+id/weaponPowerBar"
+        android:layout_alignParentStart="true">
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/is1Active"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:switchTextAppearance="@android:style/TextAppearance.Material.Small" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/name1"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu"
+            android:gravity="center_vertical"
+            android:layout_alignBottom="@+id/is1Active"
+            android:layout_toEndOf="@+id/is1Active"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:text="999"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/power1"
+            android:layout_alignBottom="@+id/name1"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Large"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc1"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/is1Active"
+            android:layout_toStartOf="@+id/power1"
+            android:layout_toEndOf="@+id/name1"
+            android:gravity="center_vertical" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
