@@ -46,6 +46,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
             ourInstance = new WiFiDirect(context);
         else
             ourInstance.context = context;
+        ourInstance.isGM = true;
         return ourInstance;
     }
 
