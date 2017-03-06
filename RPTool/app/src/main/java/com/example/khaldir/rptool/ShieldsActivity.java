@@ -108,6 +108,30 @@ public class ShieldsActivity extends ReactorClass
         frontBar.setProgress(wifiObject.frontShields);
         back.setProgress(wifiObject.rearShieldHP);
         backBar.setProgress(wifiObject.rearShields);
+        if (!wifiObject.isShieldsEditable)
+        {
+            frontBar.setVisibility(View.VISIBLE);
+            leftBar.setVisibility(View.VISIBLE);
+            rightBar.setVisibility(View.VISIBLE);
+            backBar.setVisibility(View.VISIBLE);
+            front.setVisibility(View.INVISIBLE);
+            left.setVisibility(View.INVISIBLE);
+            right.setVisibility(View.INVISIBLE);
+            back.setVisibility(View.INVISIBLE);
+            goButton.setVisibility(View.VISIBLE);
+        }
+        if(wifiObject.isShieldsEditable)
+        {
+            frontBar.setVisibility(View.INVISIBLE);
+            leftBar.setVisibility(View.INVISIBLE);
+            rightBar.setVisibility(View.INVISIBLE);
+            backBar.setVisibility(View.INVISIBLE);
+            front.setVisibility(View.VISIBLE);
+            left.setVisibility(View.VISIBLE);
+            right.setVisibility(View.VISIBLE);
+            back.setVisibility(View.VISIBLE);
+            goButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     protected void updateShields(View sender)
