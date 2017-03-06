@@ -107,7 +107,7 @@ public class EngineActivity extends ReactorClass
         }
         else
         {
-            Utilities.newSnackbar(this,"Overallocated Power!");
+            Utilities.newSnackbar(findViewById(android.R.id.content),"Overallocated Power!");
         }
         if (maxEngineOutput != wifiObject.EnginePower)
             maxEngineOutput = wifiObject.EnginePower;

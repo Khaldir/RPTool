@@ -219,19 +219,19 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 {
                     JSONObject message = new JSONObject(object.getString("message"));
                     if (message.has("pilot") && currentLocation == 1)
-                        Utilities.newSnackbar(context, message.getString("pilot"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content), message.getString("pilot"));
                     else if (message.has("shields") && currentLocation == 2)
-                        Utilities.newSnackbar(context,message.getString("shields"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("shields"));
                     else if (message.has("weapons") && currentLocation == 3)
-                        Utilities.newSnackbar(context,message.getString("weapons"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("weapons"));
                     else if (message.has("scanners") && currentLocation == 4)
-                        Utilities.newSnackbar(context,message.getString("scanners"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("scanners"));
                     else if (message.has("engines") && currentLocation == 5)
-                        Utilities.newSnackbar(context,message.getString("engines"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("engines"));
                     else if (message.has("gm") && currentLocation == 0)
-                        Utilities.newSnackbar(context,message.getString("gm"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("gm"));
                     else if (message.has("all"))
-                        Utilities.newSnackbar(context,message.getString("all"));
+                        Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("all"));
                 }
                 else if (object.has("maxEnginePower"))
                     EnginePower = Integer.getInteger(object.getString("maxEnginePower"));
@@ -312,7 +312,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     engineIP = InetAddress.getByName(object.getString("engines"));
                 else
                 {
-                    Utilities.newSnackbar(context, jsonFile);
+                    Utilities.newSnackbar(context.findViewById(android.R.id.content), jsonFile);
                 }
                 context.reactToChanges();
             } catch (JSONException e) {
