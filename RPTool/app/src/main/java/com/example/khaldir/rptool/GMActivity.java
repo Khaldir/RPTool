@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 public class GMActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,8 +29,7 @@ public class GMActivity extends ReactorClass
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                wifiObject.sendValue("enableAll","1",wifiObject.gmIP);
             }
         });
 
@@ -41,6 +41,22 @@ public class GMActivity extends ReactorClass
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    protected void modifyDodge(View sender)
+    {
+        EditText dodgeMod = (EditText)findViewById(R.id.dodgeMod);
+        String first = dodgeMod.getText().toString().substring(dodgeMod.getText().length()-1);
+        if (first == "+")
+        {
+            wifiObject.sendValue("dodge",String.valueOf(wifiObject.dodge + Integer.getInteger(dodgeMod.getText().toString())),wifiObject.gmIP);
+        }
+        if (first == "-")
+        {
+            wifiObject.sendValue("dodge",String.valueOf(wifiObject.dodge - Integer.getInteger(dodgeMod.getText().toString())),wifiObject.gmIP);
+        }
+        else
+            wifiObject.sendValue("dodge",String.valueOf(dodgeMod.getText().toString()),wifiObject.gmIP);
     }
 
     @Override

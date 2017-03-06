@@ -310,6 +310,20 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     scannerIP = InetAddress.getByName(object.getString("scanners"));
                 else if (object.has("engines"))
                     engineIP = InetAddress.getByName(object.getString("engines"));
+                else if (object.has("enableAll"))
+                    makeEditable();
+                else if (object.has("disable"))
+                {
+                    int i = object.getInt("disable");
+                    switch (i)
+                    {
+                        case 1: isPilotEditable = false; break;
+                        case 2: isShieldsEditable = false; break;
+                        case 3: isWeaponsEditable = false; break;
+                        case 4: isScannerEditable = false; break;
+                        case 5: isEnginesEditable = false; break;
+                    }
+                }
                 else
                 {
                     Utilities.newSnackbar(context.findViewById(android.R.id.content), jsonFile);

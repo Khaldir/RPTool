@@ -25,6 +25,16 @@
         android:layout_alignParentStart="true">
 
         <TextView
+            android:text="Weapons Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weaponTitle"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:paddingTop="20dp"
+            android:layout_below="@+id/shieldMod"
+            android:layout_alignParentStart="true" />
+
+        <TextView
             android:text="Pilot Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +105,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/editText2"
+            android:id="@+id/speedMod"
             android:layout_below="@+id/textView10"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/button2" />
@@ -107,9 +117,9 @@
             android:id="@+id/button2"
             android:textSize="12sp"
             android:onClick="modifyDodge"
-            android:layout_alignTop="@+id/editText2"
+            android:layout_alignTop="@+id/speedMod"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/editText2" />
+            android:layout_alignBottom="@+id/speedMod" />
 
         <TextView
             android:text="Shields Location"
@@ -117,7 +127,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/shieldTitle"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
-            android:layout_below="@+id/editText2"
+            android:layout_below="@+id/speedMod"
             android:layout_alignParentStart="true"
             android:paddingTop="20dp" />
 
@@ -171,7 +181,7 @@
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
             android:ems="10"
-            android:id="@+id/editText3"
+            android:id="@+id/shieldMod"
             android:layout_below="@+id/textView19"
             android:layout_alignParentStart="true"
             android:layout_alignEnd="@+id/textView9" />
@@ -180,10 +190,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/shieldFacing"
-            android:layout_alignTop="@+id/editText3"
-            android:layout_alignBottom="@+id/editText3"
-            android:layout_toEndOf="@+id/editText3"
-            android:layout_toStartOf="@id/button3" />
+            android:layout_alignTop="@+id/shieldMod"
+            android:layout_alignBottom="@+id/shieldMod"
+            android:layout_toEndOf="@+id/shieldMod"
+            android:layout_toStartOf="@+id/button3" />
 
         <Button
             android:text="Button"
@@ -193,17 +203,17 @@
             android:layout_alignTop="@+id/shieldFacing"
             android:layout_alignParentEnd="true"
             android:textSize="12sp"
-            android:layout_alignBottom="@+id/editText3"
+            android:layout_alignBottom="@+id/shieldMod"
             android:onClick="modifyShields" />
 
         <TextView
-            android:text="Weapons Location"
+            android:text="Sensors Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView20"
+            android:id="@+id/sensorTitle"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:paddingTop="20dp"
-            android:layout_below="@+id/editText3"
+            android:layout_below="@+id/activeWeapons"
             android:layout_alignParentStart="true" />
 
         <TextView
@@ -211,9 +221,96 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/activeWeapons"
-            android:layout_below="@+id/textView20"
+            android:layout_below="@+id/weaponTitle"
             android:layout_alignParentStart="true"
-            android:textAppearance="@android:style/TextAppearance.Material.Subhead" />
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:maxLines="6" />
+
+        <TextView
+            android:text="Scans:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activeScans"
+            android:layout_below="@+id/sensorTitle"
+            android:layout_alignParentStart="true"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:maxLines="11" />
+
+        <TextView
+            android:text="Engines Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/engineTitle"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:paddingTop="20dp"
+            android:layout_below="@+id/activeScans"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Pilot Power:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pilotPowerLabel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/engineTitle"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Shields Power:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shieldPowerLabel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/pilotPowerLabel"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Weapons Power:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weaponPowerLabel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/shieldPowerLabel"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Sensor Power:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sensorPowerLabel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/weaponPowerLabel"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Set Engine Power:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/enginePowerLabel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_below="@+id/sensorPowerLabel"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/enginePowerEBox"
+            android:layout_below="@+id/enginePowerLabel"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/button2" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button4"
+            android:textSize="12sp"
+            android:onClick="modifyDodge"
+            android:layout_alignTop="@+id/enginePowerEBox"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/enginePowerEBox" />
 
     </RelativeLayout>
 
