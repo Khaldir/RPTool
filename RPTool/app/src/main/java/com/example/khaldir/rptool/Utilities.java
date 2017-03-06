@@ -37,9 +37,9 @@ public class Utilities {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void newSnackbar(Context context, String message)
+    public static void newSnackbar(View view, String message)
     {
-        Snackbar.make(new View(context),message,Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(view,message,Snackbar.LENGTH_LONG).show();
     }
 
     public static byte[] getLocalIPAddress() {

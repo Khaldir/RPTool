@@ -137,7 +137,7 @@ public class ShieldsActivity extends ReactorClass
             }
         }
         else
-            Utilities.newSnackbar(this,"Not Enough Power!");
+            Utilities.newSnackbar(findViewById(android.R.id.content),"Not Enough Power!");
         if (!wifiObject.isShieldsEditable)
         {
             frontBar.setVisibility(View.VISIBLE);
