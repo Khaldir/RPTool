@@ -3,17 +3,16 @@ package com.example.khaldir.rptool;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class GMActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,17 +47,70 @@ public class GMActivity extends ReactorClass
     protected void modifyDodge(View sender)
     {
         EditText dodgeMod = (EditText)findViewById(R.id.dodgeMod);
-        String first = dodgeMod.getText().toString().substring(dodgeMod.getText().length()-1);
+        String first = dodgeMod.getText().toString().substring(0,1);
         if (first == "+")
         {
             wifiObject.sendValue("dodge",String.valueOf(wifiObject.dodge + Integer.getInteger(dodgeMod.getText().toString())),wifiObject.gmIP);
         }
         if (first == "-")
         {
-            wifiObject.sendValue("dodge",String.valueOf(wifiObject.dodge - Integer.getInteger(dodgeMod.getText().toString())),wifiObject.gmIP);
+            wifiObject.sendValue("dodge",String.valueOf(wifiObject.dodge + Integer.getInteger(dodgeMod.getText().toString())),wifiObject.gmIP);
         }
         else
             wifiObject.sendValue("dodge",String.valueOf(dodgeMod.getText().toString()),wifiObject.gmIP);
+    }
+
+    protected void modifyEngines(View sender)
+    {
+        EditText engineMod = (EditText)findViewById(R.id.enginePowerBox);
+        String first = engineMod.getText().toString().substring(engineMod.getText().length()-1);
+        if (first == "+")
+        {
+            wifiObject.sendValue("maxEnginePower",String.valueOf(wifiObject.EnginePower + Integer.getInteger(engineMod.getText().toString())),wifiObject.gmIP);
+        }
+        if (first == "-")
+        {
+            wifiObject.sendValue("maxEnginePower",String.valueOf(wifiObject.EnginePower - Integer.getInteger(engineMod.getText().toString())),wifiObject.gmIP);
+        }
+        else
+            wifiObject.sendValue("maxEnginePower",String.valueOf(engineMod.getText().toString()),wifiObject.gmIP);
+    }
+
+    protected void modifySpeed(View sender)
+    {
+        EditText speedMod = (EditText)findViewById(R.id.speedMod);
+        String first = speedMod.getText().toString().substring(0,1);
+        if (first == "+")
+        {
+            wifiObject.sendValue("speed",String.valueOf(wifiObject.dodge + Integer.getInteger(speedMod.getText().toString())),wifiObject.gmIP);
+        }
+        if (first == "-")
+        {
+            wifiObject.sendValue("speed",String.valueOf(wifiObject.dodge + Integer.getInteger(speedMod.getText().toString())),wifiObject.gmIP);
+        }
+        else
+            wifiObject.sendValue("speed",String.valueOf(speedMod.getText().toString()),wifiObject.gmIP);
+    }
+
+    protected void modifyShields(View sender)
+    {
+        EditText shieldMod = (EditText)findViewById(R.id.shieldMod);
+        Spinner shieldFacing = (Spinner)findViewById(R.id.shieldFacing);
+        String key = "";
+        Integer currentVal = 0;
+        switch (shieldFacing.getSelectedItem().toString())
+        {
+            case "Front": key = "frontShieldHP"; currentVal = wifiObject.frontShieldHP; break;
+            case "Left": key = "leftShieldHP"; currentVal = wifiObject.leftShieldHP; break;
+            case "Right": key = "rightShieldHP"; currentVal = wifiObject.rightShieldHP; break;
+            case "Rear": key = "rearShieldHP"; currentVal = wifiObject.rearShieldHP; break;
+        }
+        String input = shieldMod.getText().toString();
+        if (input.substring(0,1)=="-"||input.substring(0,1)=="+")
+            currentVal = currentVal + Integer.parseInt(input);
+        else
+            currentVal = Integer.parseInt(input);
+        wifiObject.sendValue(key,currentVal.toString(),wifiObject.gmIP);
     }
 
     @Override

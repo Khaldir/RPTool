@@ -116,10 +116,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/button2"
             android:textSize="12sp"
-            android:onClick="modifyDodge"
             android:layout_alignTop="@+id/speedMod"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/speedMod" />
+            android:layout_alignBottom="@+id/speedMod"
+            android:onClick="modifySpeed" />
 
         <TextView
             android:text="Shields Location"
@@ -296,7 +296,7 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="10"
-            android:id="@+id/enginePowerEBox"
+            android:id="@+id/enginePowerBox"
             android:layout_below="@+id/enginePowerLabel"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/button2" />
@@ -307,10 +307,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/button4"
             android:textSize="12sp"
-            android:onClick="modifyDodge"
-            android:layout_alignTop="@+id/enginePowerEBox"
+            android:onClick="modifyEngines"
+            android:layout_alignTop="@+id/enginePowerBox"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/enginePowerEBox" />
+            android:layout_alignBottom="@+id/enginePowerBox" />
 
     </RelativeLayout>
 
