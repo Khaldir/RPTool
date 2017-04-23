@@ -300,15 +300,40 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     }
                 }
                 else if (object.has("pilot"))
-                    pilotIP = InetAddress.getByName(object.getString("pilot"));
+                {
+                    if (object.getString("pilot")!="null")
+                        pilotIP = InetAddress.getByName(object.getString("pilot"));
+                    else
+                        pilotIP = null;
+                }
                 else if (object.has("shields"))
-                    shieldIP = InetAddress.getByName(object.getString("shields"));
+                {
+                    if (object.getString("shields")!="null")
+                        shieldIP = InetAddress.getByName(object.getString("shields"));
+                    else
+                        shieldIP = null;
+                }
                 else if (object.has("weapons"))
-                    weaponIP = InetAddress.getByName(object.getString("weapons"));
+                {
+                    if (object.getString("weapons")!="null")
+                        weaponIP = InetAddress.getByName(object.getString("weapons"));
+                    else
+                        weaponIP = null;
+                }
                 else if (object.has("scanners"))
-                    scannerIP = InetAddress.getByName(object.getString("scanners"));
+                {
+                    if (object.getString("scanners")!="null")
+                        scannerIP = InetAddress.getByName(object.getString("scanners"));
+                    else
+                        scannerIP = null;
+                }
                 else if (object.has("engines"))
-                    engineIP = InetAddress.getByName(object.getString("engines"));
+                {
+                    if (object.getString("engines")!="null")
+                        engineIP = InetAddress.getByName(object.getString("engines"));
+                    else
+                        engineIP = null;
+                }
                 else if (object.has("enableAll"))
                     makeEditable();
                 else if (object.has("disable"))

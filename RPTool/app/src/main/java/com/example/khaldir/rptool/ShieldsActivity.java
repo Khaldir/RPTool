@@ -108,7 +108,7 @@ public class ShieldsActivity extends ReactorClass
         frontBar.setProgress(wifiObject.frontShields);
         back.setProgress(wifiObject.rearShieldHP);
         backBar.setProgress(wifiObject.rearShields);
-        if (!wifiObject.isShieldsEditable)
+        if (wifiObject.isShieldsEditable)
         {
             frontBar.setVisibility(View.VISIBLE);
             leftBar.setVisibility(View.VISIBLE);
@@ -120,7 +120,7 @@ public class ShieldsActivity extends ReactorClass
             back.setVisibility(View.INVISIBLE);
             goButton.setVisibility(View.VISIBLE);
         }
-        if(wifiObject.isShieldsEditable)
+        if(!wifiObject.isShieldsEditable)
         {
             frontBar.setVisibility(View.INVISIBLE);
             leftBar.setVisibility(View.INVISIBLE);
@@ -159,6 +159,7 @@ public class ShieldsActivity extends ReactorClass
                 goButton.setVisibility(View.INVISIBLE);
                 reactToChanges();
             }
+            wifiObject.isShieldsEditable = !wifiObject.isShieldsEditable;
         }
         else
             Utilities.newSnackbar(findViewById(android.R.id.content),"Not Enough Power!");

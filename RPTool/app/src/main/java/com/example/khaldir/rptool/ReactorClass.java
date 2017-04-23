@@ -23,6 +23,6 @@ public class ReactorClass extends AppCompatActivity {
 
     public void clearLocation(String location)
     {
-        wifiObject.sendValue(location,"",wifiObject.gmIP);
+        wifiObject.sendValue(location,"null",wifiObject.gmIP);
     }
 }
