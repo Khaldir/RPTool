@@ -11,11 +11,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class GMActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    TextView shipSpeed, dodgePool,
+            frontShieldDisplay,leftShieldDisplay,rightShieldDisplay,rearShieldDisplay,
+            activeWeapons, activeScans,
+            pilotPowerLabel,shieldPowerLabel,weaponPowerLabel,sensorPowerLabel,enginePowerLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,51 @@ public class GMActivity extends ReactorClass
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Spinner shieldLocations = (Spinner)findViewById(R.id.shieldFacing);
+        shieldLocations.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,new String[]{"Front","Left","Right","Rear"}));
+
+        shipSpeed = (TextView)findViewById(R.id.shipSpeed);
+        dodgePool = (TextView)findViewById(R.id.dodgePool);
+        frontShieldDisplay = (TextView)findViewById(R.id.frontShieldDisplay);
+        leftShieldDisplay = (TextView)findViewById(R.id.leftShieldDisplay);
+        rightShieldDisplay = (TextView)findViewById(R.id.rightShieldDisplay);
+        rearShieldDisplay = (TextView)findViewById(R.id.rearShieldDisplay);
+        activeWeapons = (TextView)findViewById(R.id.activeWeapons);
+        activeScans = (TextView)findViewById(R.id.activeScans);
+        pilotPowerLabel = (TextView)findViewById(R.id.pilotPowerLabel);
+        shieldPowerLabel = (TextView)findViewById(R.id.shieldPowerLabel);
+        weaponPowerLabel = (TextView)findViewById(R.id.weaponPowerLabel);
+        sensorPowerLabel = (TextView)findViewById(R.id.sensorPowerLabel);
+        enginePowerLabel = (TextView)findViewById(R.id.enginePowerLabel);
+    }
+
+    @Override
+    public void reactToChanges() {
+        super.reactToChanges();
+        shipSpeed.setText("Ship Speed: "+wifiObject.speed);
+        dodgePool.setText("Dodge Pool: "+wifiObject.dodge);
+        frontShieldDisplay.setText("Front Shields: "+wifiObject.frontShieldHP+"/"+wifiObject.frontShields);
+        leftShieldDisplay.setText("Left Shields: "+wifiObject.leftShieldHP+"/"+wifiObject.leftShields);
+        rightShieldDisplay.setText("Right Shields: "+wifiObject.rightShieldHP+"/"+wifiObject.rightShields);
+        rearShieldDisplay.setText("Rear Shields: "+wifiObject.rearShieldHP+"/"+wifiObject.rearShields);
+        String weaponString = "Active Weapons: ";
+        for (WeaponItem weapon:wifiObject.weaponInfo)
+        {
+            weaponString = weaponString + weapon.name + System.lineSeparator();
+        }
+        activeWeapons.setText(weaponString);
+        String scanString = "Scans: ";
+        for (ScanItem scan:wifiObject.scanData)
+        {
+            scanString = scanString + scan.name + System.lineSeparator();
+        }
+        activeScans.setText(scanString);
+        pilotPowerLabel.setText("Pilot Power: "+wifiObject.PilotEnergyIn);
+        shieldPowerLabel.setText("Shields Power: "+wifiObject.ShieldEnergyIn);
+        weaponPowerLabel.setText("Weapons Power: "+wifiObject.WeaponEnergyIn);
+        sensorPowerLabel.setText("Sensor Power: "+wifiObject.SensorEnergyIn);
+        enginePowerLabel.setText("Set Engine Power: (Currently "+wifiObject.EnginePower+")");
     }
 
     protected void modifyDodge(View sender)
