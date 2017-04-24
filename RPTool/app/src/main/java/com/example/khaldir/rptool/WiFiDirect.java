@@ -302,35 +302,35 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("pilot"))
                 {
                     if (object.getString("pilot")!="null")
-                        pilotIP = InetAddress.getByName(object.getString("pilot"));
+                        pilotIP = Utilities.getInetAddressByName(object.getString("pilot"));
                     else
                         pilotIP = null;
                 }
                 else if (object.has("shields"))
                 {
                     if (object.getString("shields")!="null")
-                        shieldIP = InetAddress.getByName(object.getString("shields"));
+                        shieldIP = Utilities.getInetAddressByName(object.getString("shields"));
                     else
                         shieldIP = null;
                 }
                 else if (object.has("weapons"))
                 {
                     if (object.getString("weapons")!="null")
-                        weaponIP = InetAddress.getByName(object.getString("weapons"));
+                        weaponIP = Utilities.getInetAddressByName(object.getString("weapons"));
                     else
                         weaponIP = null;
                 }
                 else if (object.has("scanners"))
                 {
                     if (object.getString("scanners")!="null")
-                        scannerIP = InetAddress.getByName(object.getString("scanners"));
+                        scannerIP = Utilities.getInetAddressByName(object.getString("scanners"));
                     else
                         scannerIP = null;
                 }
                 else if (object.has("engines"))
                 {
                     if (object.getString("engines")!="null")
-                        engineIP = InetAddress.getByName(object.getString("engines"));
+                        engineIP = Utilities.getInetAddressByName(object.getString("engines"));
                     else
                         engineIP = null;
                 }
