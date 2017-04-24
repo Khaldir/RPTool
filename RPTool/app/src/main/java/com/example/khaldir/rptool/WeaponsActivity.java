@@ -127,13 +127,13 @@ public class WeaponsActivity extends ReactorClass
             weaponRow.get(i).setVisibility(View.INVISIBLE);
 
             // If the slot isn't empty:
-            if (wifiObject.weaponInfo.size() > 0)
+            if (wifiObject.weaponInfo.size() > i)
                 if (!wifiObject.weaponInfo.get(i).equals(null))
                 {
                     weaponRow.get(i).setVisibility(View.VISIBLE);
                     weaponNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
                     weaponDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).description);
-                    weaponPowerUses.get(i).setText(wifiObject.weaponInfo.get(i).powerUse);
+                    weaponPowerUses.get(i).setText(Integer.toString(wifiObject.weaponInfo.get(i).powerUse));
                     weaponSwitches.get(i).setChecked(wifiObject.weaponInfo.get(i).isActive);
                 }
 
