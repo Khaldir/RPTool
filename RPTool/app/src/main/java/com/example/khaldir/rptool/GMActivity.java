@@ -2,6 +2,7 @@ package com.example.khaldir.rptool;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -14,9 +15,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -28,6 +31,7 @@ public class GMActivity extends ReactorClass
             frontShieldDisplay,leftShieldDisplay,rightShieldDisplay,rearShieldDisplay,
             activeWeapons, activeScans,
             pilotPowerLabel,shieldPowerLabel,weaponPowerLabel,sensorPowerLabel,enginePowerLabel;
+    Spinner weaponsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class GMActivity extends ReactorClass
         weaponPowerLabel = (TextView)findViewById(R.id.weaponPowerLabel);
         sensorPowerLabel = (TextView)findViewById(R.id.sensorPowerLabel);
         enginePowerLabel = (TextView)findViewById(R.id.enginePowerLabel);
+        weaponsList = (Spinner)findViewById(R.id.weaponsList);
         reactToChanges();
     }
 
@@ -100,6 +105,8 @@ public class GMActivity extends ReactorClass
         weaponPowerLabel.setText("Weapons Power: "+wifiObject.WeaponEnergyIn);
         sensorPowerLabel.setText("Sensor Power: "+wifiObject.SensorEnergyIn);
         enginePowerLabel.setText("Set Engine Power: (Currently "+wifiObject.EnginePower+")");
+        weaponsList.setAdapter(new ArrayAdapter<WeaponItem>(this,android.R.layout.simple_spinner_item, wifiObject.weaponInfo));
+
     }
 
     protected void modifyDodge(View sender)
@@ -119,7 +126,6 @@ public class GMActivity extends ReactorClass
     }
 
     private String addWeaponName, addWeaponDesc, addWeaponPower;
-
 
     protected void addWeapon(View sender)
     {
@@ -204,6 +210,15 @@ public class GMActivity extends ReactorClass
             }
         });
         builder.show();
+    }
+
+    protected void removeWeapon(View sender)
+    {
+        int index = weaponsList.getSelectedItemPosition();
+        JSONObject newWeapon = Utilities.addtoJSON(new JSONObject(),"remove Weapon","weaponDetail");
+        newWeapon = Utilities.addtoJSON(newWeapon,"remove","nullify");
+        newWeapon = Utilities.addtoJSON(newWeapon,Integer.toString(index),"weaponID");
+        wifiObject.sendValue(newWeapon.toString(),wifiObject.gmIP);
     }
 
     protected void modifyEngines(View sender)

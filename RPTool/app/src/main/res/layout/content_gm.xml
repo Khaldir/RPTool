@@ -213,7 +213,7 @@
             android:id="@+id/sensorTitle"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:paddingTop="20dp"
-            android:layout_below="@+id/addWeapons"
+            android:layout_below="@+id/weaponsList"
             android:layout_alignParentStart="true" />
 
         <TextView
@@ -234,6 +234,24 @@
             android:onClick="addWeapon"
             android:id="@+id/addWeapons"
             android:textSize="12sp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/weaponsList"
+
+            android:layout_toStartOf="@+id/buttonW"
+            android:layout_alignTop="@+id/buttonW"
+            android:layout_alignBottom="@+id/buttonW"/>
+        <Button
+            android:text="Button"
+            android:layout_below="@+id/addWeapons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonW"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp"
+            android:onClick="removeWeapon" />
 
         <TextView
             android:text="Scans:"
