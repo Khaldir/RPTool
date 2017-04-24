@@ -84,7 +84,6 @@ public class ShieldsActivity extends ReactorClass
         goButton = (Button) findViewById(R.id.updateShields);
 
         wifiObject.currentLocation = 2;
-        sendLocation("shields");
     }
 
     @Override

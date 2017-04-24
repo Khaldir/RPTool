@@ -277,7 +277,7 @@ public class GMActivity extends ReactorClass
                 JSONObject newScan = Utilities.addtoJSON(new JSONObject(),"New Scan","scanData");
                 newScan = Utilities.addtoJSON(newScan,addScanType,"scanType");
                 newScan = Utilities.addtoJSON(newScan,addScanDesc,"scanDesc");
-                newScan = Utilities.addtoJSON(newScan, Integer.toString(wifiObject.scanData.size()+1),"weaponID");
+                newScan = Utilities.addtoJSON(newScan, Integer.toString(wifiObject.scanData.size()+1),"scanID");
                 wifiObject.sendValue(newScan.toString(),wifiObject.gmIP);
             }
         });

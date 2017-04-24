@@ -67,7 +67,6 @@ public class EngineActivity extends ReactorClass
         scannerBar.setMax(maxEngineOutput);
 
         wifiObject.currentLocation = 5;
-        sendLocation("engines");
 
 
     }

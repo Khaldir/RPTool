@@ -66,7 +66,6 @@ public class WeaponsActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
         wifiObject.currentLocation = 3;
-        sendLocation("weapons");
 
         availablePower = (ProgressBar) findViewById(R.id.weaponPowerBar);
 

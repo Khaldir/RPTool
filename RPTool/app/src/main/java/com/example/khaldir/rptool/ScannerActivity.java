@@ -62,7 +62,6 @@ public class ScannerActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
         wifiObject.currentLocation = 4;
-        sendLocation("scanners");
 
         initialise();
     }
