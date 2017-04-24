@@ -230,7 +230,7 @@ public class ScannerActivity extends ReactorClass
         int id = item.getItemId();
 
         if (id == R.id.nav_pilot) {
-            if (wifiObject.pilotIP == null)
+            if (wifiObject.pilotIP.equals(wifiObject.nullIP))
             {
                 clearScanner();
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
@@ -239,7 +239,7 @@ public class ScannerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_shields) {
-            if (wifiObject.shieldIP == null)
+            if (wifiObject.shieldIP.equals(wifiObject.nullIP))
             {
                 clearScanner();
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
@@ -248,7 +248,7 @@ public class ScannerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_weapons) {
-            if (wifiObject.weaponIP == null)
+            if (wifiObject.weaponIP.equals(wifiObject.nullIP))
             {
                 clearScanner();
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
@@ -257,7 +257,7 @@ public class ScannerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_engines) {
-            if (wifiObject.engineIP == null)
+            if (wifiObject.engineIP.equals(wifiObject.nullIP))
             {
                 clearScanner();
                 Intent engineIntent = new Intent(this,EngineActivity.class);

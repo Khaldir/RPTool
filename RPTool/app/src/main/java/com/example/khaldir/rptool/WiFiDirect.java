@@ -68,6 +68,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     public InetAddress weaponIP;
     public InetAddress scannerIP;
     public InetAddress engineIP;
+    public InetAddress nullIP;
 
     //Sockets
     private Socket socket;
@@ -131,6 +132,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
 
     private WiFiDirect(final ReactorClass context) {
         this.context = context;
+
+        nullIP = null;
 
         weaponInfo = new ArrayList<WeaponItem>();
         scanData = new ArrayList<ScanItem>();
@@ -299,40 +302,44 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                         weaponInfo.add(weapon);
                     }
                 }
+                else if (object.has("gm"))
+                {
+                    gmIP = Utilities.getInetAddressByName(object.getString("gm"));
+                }
                 else if (object.has("pilot"))
                 {
                     if (object.getString("pilot")!="null")
                         pilotIP = Utilities.getInetAddressByName(object.getString("pilot"));
                     else
-                        pilotIP = null;
+                        pilotIP = nullIP;
                 }
                 else if (object.has("shields"))
                 {
                     if (object.getString("shields")!="null")
                         shieldIP = Utilities.getInetAddressByName(object.getString("shields"));
                     else
-                        shieldIP = null;
+                        shieldIP = nullIP;
                 }
                 else if (object.has("weapons"))
                 {
                     if (object.getString("weapons")!="null")
                         weaponIP = Utilities.getInetAddressByName(object.getString("weapons"));
                     else
-                        weaponIP = null;
+                        weaponIP = nullIP;
                 }
                 else if (object.has("scanners"))
                 {
                     if (object.getString("scanners")!="null")
                         scannerIP = Utilities.getInetAddressByName(object.getString("scanners"));
                     else
-                        scannerIP = null;
+                        scannerIP = nullIP;
                 }
                 else if (object.has("engines"))
                 {
                     if (object.getString("engines")!="null")
                         engineIP = Utilities.getInetAddressByName(object.getString("engines"));
                     else
-                        engineIP = null;
+                        engineIP = nullIP;
                 }
                 else if (object.has("enableAll"))
                     makeEditable();
@@ -454,7 +461,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
             Utilities.newToast(context,"Group formed, Im the GO!");
             isGroupOwner = true;
             addressConnectionsList.add(p2pInfo.groupOwnerAddress);
-
+            sendValue("clientIP",Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),gmIP);
 
 
         } else if (p2pInfo.groupFormed) {
