@@ -135,12 +135,12 @@ public class ScannerActivity extends ReactorClass
             scanRow.get(i).setVisibility(View.INVISIBLE);
 
             // If the slot isn't empty:
-            if (wifiObject.scanData.size() > 0)
+            if (wifiObject.scanData.size() > i)
                 if (!wifiObject.scanData.get(i).equals(null))
                 {
                     scanRow.get(i).setVisibility(View.VISIBLE);
-                    scanNames.get(i).setText(wifiObject.weaponInfo.get(i).name);
-                    scanDescriptions.get(i).setText(wifiObject.weaponInfo.get(i).description);
+                    scanNames.get(i).setText(wifiObject.scanData.get(i).type);
+                    scanDescriptions.get(i).setText(wifiObject.scanData.get(i).description);
                 }
 
 
