@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by JakeT12 on 09/02/2017.
@@ -97,5 +99,37 @@ public class Utilities {
         return json;
     }
 
+    public static InetAddress getInetAddressByName(String name)
+    {
+        AsyncTask<String, Void, InetAddress> task = new AsyncTask<String, Void, InetAddress>()
+        {
+
+            @Override
+            protected InetAddress doInBackground(String... params)
+            {
+                try
+                {
+                    return InetAddress.getByName(params[0]);
+                }
+                catch (UnknownHostException e)
+                {
+                    return null;
+                }
+            }
+        };
+        try
+        {
+            return task.execute(name).get();
+        }
+        catch (InterruptedException e)
+        {
+            return null;
+        }
+        catch (ExecutionException e)
+        {
+            return null;
+        }
+
+    }
 
 }
