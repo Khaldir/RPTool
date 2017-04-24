@@ -263,6 +263,33 @@
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
             android:maxLines="11" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Scan"
+            android:layout_below="@id/activeScans"
+            android:onClick="addScan"
+            android:id="@+id/addScans"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scansList"
+
+            android:layout_toStartOf="@+id/buttonS"
+            android:layout_alignTop="@+id/buttonS"
+            android:layout_alignBottom="@+id/buttonS"/>
+        <Button
+            android:text="Button"
+            android:layout_below="@+id/addScans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonS"
+            android:layout_alignParentEnd="true"
+            android:textSize="12sp"
+            android:onClick="removeScan" />
+
         <TextView
             android:text="Engines Location"
             android:layout_width="wrap_content"
@@ -270,7 +297,7 @@
             android:id="@+id/engineTitle"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:paddingTop="20dp"
-            android:layout_below="@+id/activeScans"
+            android:layout_below="@+id/scansList"
             android:layout_alignParentStart="true" />
 
         <TextView

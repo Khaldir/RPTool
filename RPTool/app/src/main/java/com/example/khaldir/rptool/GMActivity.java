@@ -24,6 +24,9 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GMActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,7 +34,7 @@ public class GMActivity extends ReactorClass
             frontShieldDisplay,leftShieldDisplay,rightShieldDisplay,rearShieldDisplay,
             activeWeapons, activeScans,
             pilotPowerLabel,shieldPowerLabel,weaponPowerLabel,sensorPowerLabel,enginePowerLabel;
-    Spinner weaponsList;
+    Spinner weaponsList, scansList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class GMActivity extends ReactorClass
         sensorPowerLabel = (TextView)findViewById(R.id.sensorPowerLabel);
         enginePowerLabel = (TextView)findViewById(R.id.enginePowerLabel);
         weaponsList = (Spinner)findViewById(R.id.weaponsList);
+        scansList = (Spinner)findViewById(R.id.scansList);
         reactToChanges();
     }
 
@@ -219,6 +223,80 @@ public class GMActivity extends ReactorClass
         newWeapon = Utilities.addtoJSON(newWeapon,"remove","nullify");
         newWeapon = Utilities.addtoJSON(newWeapon,Integer.toString(index),"weaponID");
         wifiObject.sendValue(newWeapon.toString(),wifiObject.gmIP);
+    }
+
+    private String addScanDesc, addScanType;
+
+    protected void addScan(View sender)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Scan Type");
+
+        //Set up input
+        final Spinner input = new Spinner(this);
+        ArrayList<String> types = new ArrayList<String>();
+        types.add("Enemy");
+        types.add("Object");
+        types.add("Unknown");
+        types.add("Friendly");
+
+        input.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, types));
+        builder.setView(input);
+        //Set up buttons
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addScanType = input.getSelectedItem().toString();
+                addScanDesc();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    protected void addScanDesc()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Scan Description");
+
+        //Set up input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        //Set up buttons
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addScanDesc = input.getText().toString();
+                JSONObject newScan = Utilities.addtoJSON(new JSONObject(),"New Scan","scanData");
+                newScan = Utilities.addtoJSON(newScan,addScanType,"scanType");
+                newScan = Utilities.addtoJSON(newScan,addScanDesc,"scanDesc");
+                newScan = Utilities.addtoJSON(newScan, Integer.toString(wifiObject.scanData.size()+1),"weaponID");
+                wifiObject.sendValue(newScan.toString(),wifiObject.gmIP);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    protected void removeScan(View sender)
+    {
+        int index = scansList.getSelectedItemPosition();
+        JSONObject newScan = Utilities.addtoJSON(new JSONObject(),"remove Scan","scanData");
+        newScan = Utilities.addtoJSON(newScan,"remove","nullify");
+        newScan = Utilities.addtoJSON(newScan,Integer.toString(index),"scanID");
+        wifiObject.sendValue(newScan.toString(),wifiObject.gmIP);
     }
 
     protected void modifyEngines(View sender)
