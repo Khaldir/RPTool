@@ -1,8 +1,11 @@
 package com.example.khaldir.rptool;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.json.JSONObject;
 
 public class GMActivity extends ReactorClass
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +71,7 @@ public class GMActivity extends ReactorClass
         weaponPowerLabel = (TextView)findViewById(R.id.weaponPowerLabel);
         sensorPowerLabel = (TextView)findViewById(R.id.sensorPowerLabel);
         enginePowerLabel = (TextView)findViewById(R.id.enginePowerLabel);
+        reactToChanges();
     }
 
     @Override
@@ -110,6 +116,94 @@ public class GMActivity extends ReactorClass
         }
         else
             wifiObject.sendValue("dodge",String.valueOf(dodgeMod.getText().toString()),wifiObject.gmIP);
+    }
+
+    private String addWeaponName, addWeaponDesc, addWeaponPower;
+
+
+    protected void addWeapon(View sender)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Weapon Name");
+
+        //Set up input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        //Set up buttons
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addWeaponName = input.getText().toString();
+                addWeaponDesc();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    protected void addWeaponDesc()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Weapon Description");
+
+        //Set up input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        //Set up buttons
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addWeaponDesc = input.getText().toString();
+                addWeaponPower();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    protected void addWeaponPower()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Weapon Power");
+
+        //Set up input
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(input);
+        //Set up buttons
+        builder.setPositiveButton("Next", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addWeaponPower = input.getText().toString();
+                JSONObject newWeapon = Utilities.addtoJSON(new JSONObject(),"New Weapon","weaponDetail");
+                newWeapon = Utilities.addtoJSON(newWeapon,addWeaponName,"weaponName");
+                newWeapon = Utilities.addtoJSON(newWeapon,addWeaponDesc,"weaponDesc");
+                newWeapon = Utilities.addtoJSON(newWeapon,addWeaponPower,"weaponPower");
+                newWeapon = Utilities.addtoJSON(newWeapon,"false","weaponOn");
+                newWeapon = Utilities.addtoJSON(newWeapon, Integer.toString(wifiObject.weaponInfo.size()+1),"weaponID");
+                wifiObject.sendValue(newWeapon.toString(),wifiObject.gmIP);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 
     protected void modifyEngines(View sender)
