@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -171,33 +172,35 @@ public class MainActivity extends ReactorClass {
 
 
     protected void connectToDevice(View view) {
-        if(isConnected)
-            if(wifiObject.isGM)
-            {
-                Intent intent = new Intent(context,GMActivity.class);
-                context.startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(context,PlayerActivity.class);
-                context.startActivity(intent);
-            }
-
-        else
+        if(!isConnected)
         {
             isConnected = wifiObject.connectToDevice();
-            if (isConnected)
-                if(wifiObject.isGM)
-                    connectButton.setText("Go to GM Screen");
-                else
-                    connectButton.setText("Go to Player Screen");
+            if (isConnected) {
+                connectButton.setText("Go to GM Screen");
+                findViewById(R.id.nextActivityButton).setVisibility(View.VISIBLE);
+            }
         }
-
-
     }
 
 
+    protected void nextActivity(View sender)
+    {
+        wifiObject.becomeGM();
+        Intent intent = new Intent(context,PlayerActivity.class);
+        context.startActivity(intent);
+    }
 
+    @Override
+    public void reactToChanges() {
+        super.reactToChanges();
+        TextView connectedDevices = (TextView)findViewById(R.id.connectedDevices);
+        String text = "Connected Devices" + System.lineSeparator();
+        for (InetAddress address:wifiObject.addressConnectionsList)
+        {
+            text = text + address.getHostName();
+        }
+        connectedDevices.setText(text);
+    }
 
 
 

@@ -467,6 +467,10 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
         }
     }
 
+    public void becomeGM(){
+        sendValue("gm",Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),gmIP);
+
+    }
 
     public void sendValue(String tag, String value, InetAddress recipient)
     {
