@@ -12,11 +12,11 @@ public class WeaponItem {
     public int powerUse;
     public boolean isActive;
 
-    public WeaponItem(String id, String content, String description, String powerUse, boolean isON) {
+    public WeaponItem(String id, String content, String description, int powerUse, boolean isON) {
         this.id = id;
         this.name = content;
         this.description = description;
-        this.powerUse = Integer.getInteger(powerUse);
+        this.powerUse = powerUse;
         this.isActive = isON;
     }
 

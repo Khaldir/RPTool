@@ -295,7 +295,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     }
                     else
                     {
-                        WeaponItem weapon = new WeaponItem(object.getString("weaponID"),object.getString("weaponName"),object.getString("weaponDesc"),object.getString("weaponPower"),object.getBoolean("weaponOn"));
+                        WeaponItem weapon = new WeaponItem(object.getString("weaponID"),object.getString("weaponName"),object.getString("weaponDesc"),object.getInt("weaponPower"),object.getBoolean("weaponOn"));
                         weaponInfo.add(weapon);
                     }
                 }
