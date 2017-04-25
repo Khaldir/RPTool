@@ -173,13 +173,9 @@ public class MainActivity extends ReactorClass {
 
 
     protected void connectToDevice(View view) {
-        if(!isConnected)
-        {
-            isConnected = wifiObject.connectToDevice();
+        isConnected = wifiObject.connectToDevice();
             if (isConnected)
-                connectButton.setText("Go to Player Screen");
-            findViewById(R.id.nextActivityButton).setVisibility(View.VISIBLE);
-        }
+                findViewById(R.id.nextActivityButton).setVisibility(View.VISIBLE);
 
 
     }

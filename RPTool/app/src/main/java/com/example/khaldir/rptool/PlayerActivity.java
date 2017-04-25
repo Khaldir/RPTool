@@ -130,9 +130,8 @@ public class PlayerActivity extends ReactorClass
         int id = item.getItemId();
 
         if (id == R.id.nav_pilot) {
-            if (wifiObject.pilotIP == null)
+            if (wifiObject.pilotIP.equals(wifiObject.nullIP))
             {
-                wifiObject.engineIP = null;
                 Intent pilotIntent = new Intent(this,PilotActivity.class);
                 this.startActivity(pilotIntent);
                 finish();
@@ -140,9 +139,8 @@ public class PlayerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_shields) {
-            if (wifiObject.shieldIP == null)
+            if (wifiObject.shieldIP.equals(wifiObject.nullIP))
             {
-                wifiObject.engineIP = null;
                 Intent shieldIntent = new Intent(this,ShieldsActivity.class);
                 this.startActivity(shieldIntent);
                 finish();
@@ -150,9 +148,8 @@ public class PlayerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_weapons) {
-            if (wifiObject.weaponIP == null)
+            if (wifiObject.weaponIP.equals(wifiObject.nullIP))
             {
-                wifiObject.engineIP = null;
                 Intent weaponIntent = new Intent(this,WeaponsActivity.class);
                 this.startActivity(weaponIntent);
                 finish();
@@ -160,9 +157,8 @@ public class PlayerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_sensors) {
-            if (wifiObject.scannerIP == null)
+            if (wifiObject.scannerIP.equals(wifiObject.nullIP))
             {
-                wifiObject.engineIP = null;
                 Intent sensorIntent = new Intent(this,ScannerActivity.class);
                 this.startActivity(sensorIntent);
                 finish();
@@ -170,9 +166,8 @@ public class PlayerActivity extends ReactorClass
             else
                 Utilities.newToast(this,"There is already someone at this Station!");
         } else if (id == R.id.nav_engines) {
-            if (wifiObject.engineIP == null)
+            if (wifiObject.engineIP.equals(wifiObject.nullIP))
             {
-                wifiObject.engineIP = null;
                 Intent engineIntent = new Intent(this,EngineActivity.class);
                 this.startActivity(engineIntent);
             }
