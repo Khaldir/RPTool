@@ -197,7 +197,7 @@ public class MainActivity extends ReactorClass {
         String text = "Connected Devices" + System.lineSeparator();
         for (InetAddress address:wifiObject.addressConnectionsList)
         {
-            text = text + address.getHostName();
+            text = text + address.toString() + System.lineSeparator();
         }
         connectedDevices.setText(text);
     }
