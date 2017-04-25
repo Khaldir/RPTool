@@ -246,14 +246,27 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 else if (object.has("scannerEnergyIn"))
                     SensorEnergyIn = object.getInt("scannerEnergyIn");
                 else if (object.has("frontShields"))
+                {
                     frontShields = object.getInt("frontShields");
+                    frontShieldHP = frontShields;
+                    isShieldsEditable = false;
+                }
                 else if (object.has("leftShields"))
+                {
                     leftShields = object.getInt("leftShields");
+                    leftShieldHP = leftShields;
+                    isShieldsEditable = false;
+                }
                 else if (object.has("rightShields"))
+                {
                     rightShields = object.getInt("rightShields");
+                    rightShieldHP = rightShields;
+                    isShieldsEditable = false;
+                }
                 else if (object.has("rearShields"))
                 {
                     rearShields = object.getInt("rearShields");
+                    rearShieldHP = rearShields;
                     isShieldsEditable = false;
                 }
                 else if (object.has("frontShieldHP"))
