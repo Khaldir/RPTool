@@ -156,27 +156,12 @@ public class ScannerActivity extends ReactorClass
 
     private void sendValues(int id)
     {
-        //Get Destination
         JSONObject jsonChild;
         JSONObject jsonParent;
-        switch((String)scanNames.get(id).getText())
-        {
-            //If the scanned item is an Enemy:
-            case "Enemy":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"weapons");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-                break;
-            case "Number of Enemies":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"weapons");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-                break;
-            case "Ship Health":
-                jsonChild = Utilities.addtoJSON(new JSONObject(),(String)scanDescriptions.get(id).getText(),"shields");
-                jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
-                wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
-        }
+        jsonChild = Utilities.addtoJSON(new JSONObject(),scanDescriptions.get(id).getText().toString(),"allthe");
+        jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
+        wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
+
     }
 
     @Override
