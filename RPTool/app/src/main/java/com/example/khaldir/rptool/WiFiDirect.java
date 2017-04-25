@@ -69,6 +69,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     public InetAddress weaponIP;
     public InetAddress scannerIP;
     public InetAddress engineIP;
+    public InetAddress nullIP;
 
     //Sockets
     private Socket socket;
@@ -147,7 +148,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     private WiFiDirect(final ReactorClass context) {
         this.context = context;
 
-
+        nullIP = pilotIP = shieldIP = weaponIP = scannerIP = engineIP = InetAddress.getLoopbackAddress();
 
         isGM = false;
 
@@ -324,35 +325,35 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                     if (object.getString("pilot")!="null")
                         pilotIP = Utilities.getInetAddressByName(object.getString("pilot"));
                     else
-                    pilotIP = null;
+                    pilotIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("shields"))
                 {
                     if (object.getString("shields")!="null")
                         shieldIP = Utilities.getInetAddressByName(object.getString("shields"));
                     else
-                    shieldIP = null;
+                    shieldIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("weapons"))
                 {
                     if (object.getString("weapons")!="null")
                         weaponIP = Utilities.getInetAddressByName(object.getString("weapons"));
                     else
-                    weaponIP = null;
+                    weaponIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("scanners"))
                 {
                     if (object.getString("scanners")!="null")
                         scannerIP = Utilities.getInetAddressByName(object.getString("scanners"));
                     else
-                    scannerIP = null;
+                    scannerIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("engines"))
                 {
                     if (object.getString("engines")!="null")
                         engineIP = Utilities.getInetAddressByName(object.getString("engines"));
                     else
-                    engineIP = null;
+                    engineIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("enableAll"))
                     makeEditable();
