@@ -1,5 +1,6 @@
 package com.example.khaldir.rptool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 public class EngineActivity extends ReactorClass
@@ -23,13 +25,16 @@ public class EngineActivity extends ReactorClass
     SeekBar shieldBar;
     SeekBar weaponBar;
     SeekBar scannerBar;
+    ProgressBar maxBar;
 
     int maxEngineOutput;
 
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_engine);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,6 +63,12 @@ public class EngineActivity extends ReactorClass
         shieldBar = (SeekBar) findViewById(R.id.shieldEnergy);
         weaponBar = (SeekBar) findViewById(R.id.weaponEnergy);
         scannerBar = (SeekBar) findViewById(R.id.scannerEnergy);
+        maxBar = (ProgressBar)findViewById(R.id.maxEngineEnergy);
+
+        pilotBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        shieldBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        weaponBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        scannerBar.setOnSeekBarChangeListener(seekBarChangeListener);
 
         maxEngineOutput = wifiObject.EnginePower;
 
@@ -72,6 +83,29 @@ public class EngineActivity extends ReactorClass
 
     }
 
+    int powerUsed = 0;
+
+    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            powerUsed = pilotBar.getProgress() + shieldBar.getProgress() + weaponBar.getProgress() + scannerBar.getProgress();
+            if(powerUsed <= maxEngineOutput)
+                maxBar.setProgress(powerUsed);
+            else
+                Utilities.newToast(context,"Power Overallocated!");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -82,6 +116,17 @@ public class EngineActivity extends ReactorClass
     public void reactToChanges()
     {
         maxEngineOutput = wifiObject.EnginePower;
+        if (powerUsed > maxEngineOutput)
+        {
+            pilotBar.setProgress(0);
+            shieldBar.setProgress(0);
+            weaponBar.setProgress(0);
+            scannerBar.setProgress(0);
+            powerUsed = 0;
+        }
+
+
+        maxBar.setMax(maxEngineOutput);
 
         pilotBar.setMax(maxEngineOutput);
         pilotBar.setEnabled(wifiObject.isEnginesEditable);
