@@ -151,14 +151,16 @@ public class ScannerActivity extends ReactorClass
 
     protected void scanSend(View sender)
     {
-        sendValues((int)sender.getTag());
+        String buttonNumber = (String)sender.getTag();
+        int number = Integer.parseInt(buttonNumber);
+        sendValues(number);
     }
 
     private void sendValues(int id)
     {
         JSONObject jsonChild;
         JSONObject jsonParent;
-        jsonChild = Utilities.addtoJSON(new JSONObject(),scanDescriptions.get(id).getText().toString(),"allthe");
+        jsonChild = Utilities.addtoJSON(new JSONObject(),scanDescriptions.get(id-1).getText().toString(),"all");
         jsonParent = Utilities.addtoJSON(new JSONObject(),jsonChild.toString(),"message");
         wifiObject.sendValue(jsonParent.toString(),wifiObject.gmIP);
 
