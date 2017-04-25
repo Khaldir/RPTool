@@ -254,7 +254,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                         Utilities.newSnackbar(context.findViewById(android.R.id.content),message.getString("all"));
                 }
                 else if (object.has("maxEnginePower"))
-                    EnginePower = Integer.getInteger(object.getString("maxEnginePower"));
+                    EnginePower = Integer.parseInt(object.getString("maxEnginePower"));
                 else if (object.has("pilotEnergyIn"))
                     PilotEnergyIn = object.getInt("pilotEnergyIn");
                 else if (object.has("shieldEnergyIn"))

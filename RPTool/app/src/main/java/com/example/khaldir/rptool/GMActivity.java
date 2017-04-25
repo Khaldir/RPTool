@@ -302,14 +302,14 @@ public class GMActivity extends ReactorClass
     protected void modifyEngines(View sender)
     {
         EditText engineMod = (EditText)findViewById(R.id.enginePowerBox);
-        String first = engineMod.getText().toString().substring(engineMod.getText().length()-1);
+        String first = engineMod.getText().toString().substring(0,1);
         if (first == "+")
         {
             wifiObject.sendValue("maxEnginePower",String.valueOf(wifiObject.EnginePower + Integer.getInteger(engineMod.getText().toString())),wifiObject.gmIP);
         }
         if (first == "-")
         {
-            wifiObject.sendValue("maxEnginePower",String.valueOf(wifiObject.EnginePower - Integer.getInteger(engineMod.getText().toString())),wifiObject.gmIP);
+            wifiObject.sendValue("maxEnginePower",String.valueOf(wifiObject.EnginePower + Integer.getInteger(engineMod.getText().toString())),wifiObject.gmIP);
         }
         else
             wifiObject.sendValue("maxEnginePower",String.valueOf(engineMod.getText().toString()),wifiObject.gmIP);
