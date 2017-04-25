@@ -1,5 +1,6 @@
 package com.example.khaldir.rptool;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -38,10 +39,12 @@ public class ShieldsActivity extends ReactorClass
     int maxEngineOutput;
     int availablePower;
 
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_shields);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,9 +69,13 @@ public class ShieldsActivity extends ReactorClass
 
         wifiObject = WiFiDirect.getInstance(this);
         frontBar = (SeekBar) findViewById(R.id.frontShields);
+        frontBar.setOnSeekBarChangeListener(seekBarChangeListener);
         leftBar = (SeekBar) findViewById(R.id.leftShields);
+        leftBar.setOnSeekBarChangeListener(seekBarChangeListener);
         rightBar = (SeekBar) findViewById(R.id.rightShields);
+        rightBar.setOnSeekBarChangeListener(seekBarChangeListener);
         backBar = (SeekBar) findViewById(R.id.backShields);
+        backBar.setOnSeekBarChangeListener(seekBarChangeListener);
 
         availablePowerBar = (ProgressBar) findViewById(R.id.maxShieldEnergy);
         front = (ProgressBar) findViewById(R.id.frontShieldProg);
@@ -87,6 +94,29 @@ public class ShieldsActivity extends ReactorClass
         sendLocation("shields");
     }
 
+    int powerUsed = 0;
+
+    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            powerUsed = frontBar.getProgress() + leftBar.getProgress() + rightBar.getProgress() + backBar.getProgress();
+            if(powerUsed <= maxEngineOutput)
+                availablePowerBar.setProgress(powerUsed);
+            else
+                Utilities.newToast(context,"Power Overallocated!");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -97,17 +127,25 @@ public class ShieldsActivity extends ReactorClass
     public void reactToChanges()
     {
         maxEngineOutput = wifiObject.EnginePower;
-        availablePowerBar.setMax(maxEngineOutput);
+        availablePowerBar.setMax(availablePower);
         availablePower = wifiObject.ShieldEnergyIn;
-        availablePowerBar.setProgress(availablePower);
+        availablePowerBar.setProgress(powerUsed);
         left.setProgress(wifiObject.leftShieldHP);
         leftBar.setProgress(wifiObject.leftShields);
+        left.setMax(availablePower);
+        leftBar.setMax(availablePower);
         right.setProgress(wifiObject.rightShieldHP);
         rightBar.setProgress(wifiObject.rightShields);
+        right.setMax(availablePower);
+        rightBar.setMax(availablePower);
         front.setProgress(wifiObject.frontShieldHP);
         frontBar.setProgress(wifiObject.frontShields);
+        front.setMax(availablePower);
+        frontBar.setMax(availablePower);
         back.setProgress(wifiObject.rearShieldHP);
         backBar.setProgress(wifiObject.rearShields);
+        back.setMax(availablePower);
+        backBar.setMax(availablePower);
         if (wifiObject.isShieldsEditable)
         {
             frontBar.setVisibility(View.VISIBLE);
