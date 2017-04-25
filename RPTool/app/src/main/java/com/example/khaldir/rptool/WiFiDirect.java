@@ -83,6 +83,20 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
 
     boolean isGM;
 
+    // Action Listener
+    WifiP2pManager.ActionListener wifiListener = new WifiP2pManager.ActionListener() {
+        @Override
+        public void onSuccess() {
+            // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+
+        }
+
+        @Override
+        public void onFailure(int reason) {
+            Utilities.newToast(context,"Connect failed. Retry.");
+        }
+    };
+
     //Fields
     //All
     int EnginePower;
@@ -133,6 +147,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     private WiFiDirect(final ReactorClass context) {
         this.context = context;
 
+
+
         isGM = false;
 
         weaponInfo = new ArrayList<WeaponItem>();
@@ -162,6 +178,8 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 Utilities.newToast(context,"Channel disconnected!");
             }
         });
+
+        mManager.createGroup(mChannel, wifiListener);
 
         updateConversationHandler = new Handler();
 
@@ -397,24 +415,15 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
     //Device to Connect to
     public WifiP2pDevice connectDevice;
 
+
+
     protected boolean connectToDevice() {
         if (connectDevice != null) {
             WifiP2pConfig WiFiConfig = new WifiP2pConfig();
             WiFiConfig.deviceAddress = connectDevice.deviceAddress;
             WiFiConfig.wps.setup = WpsInfo.PBC;
 
-            mManager.connect(mChannel, WiFiConfig, new WifiP2pManager.ActionListener() {
-                @Override
-                public void onSuccess() {
-                    // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-
-                }
-
-                @Override
-                public void onFailure(int reason) {
-                    Utilities.newToast(context,"Connect failed. Retry.");
-                }
-            });
+            mManager.connect(mChannel, WiFiConfig, wifiListener);
             return true;
         } else {
             Utilities.newToast(context,"Select a Device");
@@ -469,7 +478,7 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
 
     public void becomeGM(){
         sendValue("gm",Utilities.getDottedDecimalIP(Utilities.getLocalIPAddress()),gmIP);
-
+        isGM = true;
     }
 
     public void sendValue(String tag, String value, InetAddress recipient)

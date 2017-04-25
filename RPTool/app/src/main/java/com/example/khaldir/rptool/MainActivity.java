@@ -172,13 +172,11 @@ public class MainActivity extends ReactorClass {
 
 
     protected void connectToDevice(View view) {
-        if(!isConnected)
+        isConnected = wifiObject.connectToDevice();
+        if (isConnected)
         {
-            isConnected = wifiObject.connectToDevice();
-            if (isConnected) {
-                connectButton.setText("Go to GM Screen");
-                findViewById(R.id.nextActivityButton).setVisibility(View.VISIBLE);
-            }
+            connectButton.setText("Go to GM Screen");
+            findViewById(R.id.nextActivityButton).setVisibility(View.VISIBLE);
         }
     }
 
@@ -197,7 +195,7 @@ public class MainActivity extends ReactorClass {
         String text = "Connected Devices" + System.lineSeparator();
         for (InetAddress address:wifiObject.addressConnectionsList)
         {
-            text = text + address.getHostName();
+            text = text + address.toString() + System.lineSeparator();
         }
         connectedDevices.setText(text);
     }
