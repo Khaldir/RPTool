@@ -263,7 +263,7 @@ public class GMActivity extends ReactorClass
     protected void addScanDesc()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Scan Description");
+        builder.setTitle(addScanType + " Description");
 
         //Set up input
         final EditText input = new EditText(this);

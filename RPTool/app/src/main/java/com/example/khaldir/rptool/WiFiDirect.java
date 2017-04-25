@@ -322,35 +322,35 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                 }
                 else if (object.has("pilot"))
                 {
-                    if (object.getString("pilot")!="null")
+                    if (!object.getString("pilot").equals("null"))
                         pilotIP = Utilities.getInetAddressByName(object.getString("pilot"));
                     else
                     pilotIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("shields"))
                 {
-                    if (object.getString("shields")!="null")
+                    if (!object.getString("shields").equals("null"))
                         shieldIP = Utilities.getInetAddressByName(object.getString("shields"));
                     else
                     shieldIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("weapons"))
                 {
-                    if (object.getString("weapons")!="null")
+                    if (!object.getString("weapons").equals("null"))
                         weaponIP = Utilities.getInetAddressByName(object.getString("weapons"));
                     else
                     weaponIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("scanners"))
                 {
-                    if (object.getString("scanners")!="null")
+                    if (!object.getString("scanners").equals("null"))
                         scannerIP = Utilities.getInetAddressByName(object.getString("scanners"));
                     else
                     scannerIP = InetAddress.getLoopbackAddress();
                 }
                 else if (object.has("engines"))
                 {
-                    if (object.getString("engines")!="null")
+                    if (!object.getString("engines").equals("null"))
                         engineIP = Utilities.getInetAddressByName(object.getString("engines"));
                     else
                     engineIP = InetAddress.getLoopbackAddress();
