@@ -314,13 +314,12 @@ public class WiFiDirect implements WifiP2pManager.ConnectionInfoListener{
                         WeaponItem weapon = new WeaponItem(object.getString("weaponName"),object.getString("weaponDesc"),object.getInt("weaponPower"),object.getBoolean("weaponOn"));
                         boolean isDupe = false;
                         for (WeaponItem arrayWeapon:weaponInfo) {
-                            if(arrayWeapon.equals(weapon))
+                            if(arrayWeapon.name.equals(weapon.name))
                             {
-                                isDupe = true;
+                                weaponInfo.remove(arrayWeapon);
                             }
                         }
-                        if (!isDupe)
-                            weaponInfo.add(weapon);
+                        weaponInfo.add(weapon);
                     }
                 }
                 else if (object.has("gm"))
