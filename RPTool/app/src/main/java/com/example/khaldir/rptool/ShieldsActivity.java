@@ -100,7 +100,7 @@ public class ShieldsActivity extends ReactorClass
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             powerUsed = frontBar.getProgress() + leftBar.getProgress() + rightBar.getProgress() + backBar.getProgress();
-            if(powerUsed <= maxEngineOutput)
+            if(powerUsed <= availablePower)
                 availablePowerBar.setProgress(powerUsed);
             else
                 Utilities.newToast(context,"Power Overallocated!");
