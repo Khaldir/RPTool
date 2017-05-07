@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public class WeaponItem {
-    public String id;
     public String name;
     public String description;
     public int powerUse;
     public boolean isActive;
 
-    public WeaponItem(String id, String content, String description, int powerUse, boolean isON) {
-        this.id = id;
+    public WeaponItem(String content, String description, int powerUse, boolean isON) {
         this.name = content;
         this.description = description;
         this.powerUse = powerUse;
